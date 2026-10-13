@@ -30,6 +30,9 @@
   --font-text: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, monospace;
 
+  /* Vertical rhythm between top-level blocks */
+  --gap-section: 5rem;
+
   color-scheme: light;
 }
 
@@ -172,7 +175,7 @@ body {
 }
 
 .masthead {
-  margin-bottom: 4.5rem;
+  margin-bottom: var(--gap-section);
 }
 
 .masthead__sub {
@@ -185,8 +188,9 @@ body {
   margin-top: 0.75rem;
 }
 
-.section + .section {
-  margin-top: 4.5rem;
+.section + .section,
+.entries + .section {
+  margin-top: var(--gap-section);
 }
 
 .section__note {
@@ -201,7 +205,7 @@ body {
 .entries {
   display: flex;
   flex-direction: column;
-  gap: 5rem;
+  gap: var(--gap-section);
 }
 
 .entry__head {

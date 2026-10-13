@@ -1,12 +1,19 @@
 ﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="bonsai-demo">
   <title>bonsai-demo</title>
-  <rect width="64" height="64" rx="15" fill="#16171d"/>
-  <g fill="#57cf85">
-    <ellipse cx="32" cy="25" rx="17" ry="9.5"/>
-    <circle cx="23.5" cy="15.5" r="8.5"/>
-    <circle cx="39" cy="17.5" r="8"/>
+  <style>
+    .mark { fill: #1d1814; }
+    .stem { stroke: #1d1814; }
+    @media (prefers-color-scheme: dark) {
+      .mark { fill: #fcfaf7; }
+      .stem { stroke: #fcfaf7; }
+    }
+  </style>
+  <g transform="translate(32 32) scale(1.12) translate(-32 -32)">
+    <ellipse class="mark" cx="32" cy="25" rx="17" ry="9.5"/>
+    <circle class="mark" cx="23.5" cy="15.5" r="8.5"/>
+    <circle class="mark" cx="39" cy="17.5" r="8"/>
+    <path class="stem" d="M32 45.4c0-4.2-.7-7.6-1.8-10.6" fill="none" stroke-width="2.8" stroke-linecap="round"/>
+    <rect class="mark" x="15.5" y="44.6" width="33" height="4.4" rx="1.8"/>
+    <path class="mark" d="M18.2 49h27.6l-2.5 7.4a2.6 2.6 0 0 1-2.47 1.8H23.17a2.6 2.6 0 0 1-2.47-1.8z"/>
   </g>
-  <path d="M32 45.4c0-4.2-.7-7.6-1.8-10.6" fill="none" stroke="#8a5a3b" stroke-width="2.8" stroke-linecap="round"/>
-  <rect x="15.5" y="44.6" width="33" height="4.4" rx="1.8" fill="#d08661"/>
-  <path d="M18.2 49h27.6l-2.5 7.4a2.6 2.6 0 0 1-2.47 1.8H23.17a2.6 2.6 0 0 1-2.47-1.8z" fill="#b96f4c"/>
 </svg>
