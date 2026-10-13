@@ -313,7 +313,7 @@ body {
    Gated on a real pointer so a tap does not leave it stuck filled. */
 @media (hover: hover) {
   .code__frame:hover .copy {
-    background: var(--neutral-300);
+    background: var(--neutral-200);
     color: var(--ink);
   }
 }
