@@ -1,3 +1,4 @@
+import { MotionConfig } from 'motion/react'
 import { Link } from './components/Link'
 import { usePathname } from './router'
 import Gallery from './pages/Gallery'
@@ -24,7 +25,7 @@ function App() {
   const match = routes.find((route) => route.to === pathname)
 
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <nav className="nav" aria-label="Sections">
         {routes.map((route) => (
           <Link
@@ -39,7 +40,7 @@ function App() {
       </nav>
 
       {match ? match.element : <NotFound />}
-    </>
+    </MotionConfig>
   )
 }
 
