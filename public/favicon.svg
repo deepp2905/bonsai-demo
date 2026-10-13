@@ -2,17 +2,15 @@
   <title>bonsai-demo</title>
   <style>
     .mark { fill: #1d1814; }
-    .stem { stroke: #1d1814; }
     @media (prefers-color-scheme: dark) {
       .mark { fill: #fcfaf7; }
-      .stem { stroke: #fcfaf7; }
     }
   </style>
   <g transform="translate(32 32) scale(1.12) translate(-32 -32)">
+    <path class="mark" d="M20.2 45.4C21.2 41.5 31.6 37.5 33.6 33.5H36.4C38.6 37.5 24.8 41.5 25.8 45.4Z"/>
     <ellipse class="mark" cx="32" cy="25" rx="17" ry="9.5"/>
     <circle class="mark" cx="23.5" cy="15.5" r="8.5"/>
     <circle class="mark" cx="39" cy="17.5" r="8"/>
-    <path class="stem" d="M32 45.4c0-4.2-.7-7.6-1.8-10.6" fill="none" stroke-width="2.8" stroke-linecap="round"/>
     <rect class="mark" x="15.5" y="44.6" width="33" height="4.4" rx="1.8"/>
     <path class="mark" d="M18.2 49h27.6l-2.5 7.4a2.6 2.6 0 0 1-2.47 1.8H23.17a2.6 2.6 0 0 1-2.47-1.8z"/>
   </g>

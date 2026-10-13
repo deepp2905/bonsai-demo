@@ -9,7 +9,8 @@ const iconMotion = {
   exit: { opacity: 0, scale: 0.25, filter: 'blur(4px)' },
 }
 
-const spring = { type: 'spring', duration: 0.3, bounce: 0 } as const
+// The course fixes 0.3 for this swap; the snappier 0.18 is Deep's call.
+const spring = { type: 'spring', duration: 0.18, bounce: 0 } as const
 
 const HOLD_MS = 1600
 
