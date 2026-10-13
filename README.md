@@ -1,32 +1,48 @@
-# React + TypeScript + Vite
+# Bonsai interaction demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A design exploration that rebuilds a handful of interaction details from Bonsai. Each entry pairs the problem with the version that shipped, the reasoning behind it, the relevant code, and a demo. It is not an official Bonsai changelog.
 
-Currently, two official plugins are available:
+## Pages
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Interactions** (`/`): the gallery of entries.
+  1. **Stacked toasts**: a live Before/After demo. New toasts enter at the bottom and push the stack up as a unit, each toast leaves on its own clock, and hovering or focusing the stack pauses every timer.
+  2. **Origin-aware menus**: menus scale out of the click point instead of the element centre.
+  3. **Hold to delete**: a destructive action that needs an 800ms hold, with a progress ring.
+  4. **Miscellaneous**: smaller single-property details (button press, toggle, tooltip, checkbox).
+- **Type & Color** (`/typography`): the type scale (Satoshi) and the warm OKLCH neutral palette used across the site.
 
-## React Compiler
+## Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + TypeScript, built with Vite
+- [Motion](https://motion.dev) for animation, with `reducedMotion="user"` set app-wide
+- [Lucide](https://lucide.dev) icons
+- Oxlint for linting
+- A small history-based router in `src/router.tsx` (no routing library)
 
-## Expanding the Oxlint configuration
+## Project layout
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```
+src/
+  entries.ts          Gallery content: title, context, code snippet and media per entry
+  pages/              Gallery and Typography pages
+  components/
+    Entry.tsx         One gallery entry
+    MediaSlot.tsx     Demo, video placeholder or before/after comparison
+    ToastDemo.tsx     The live stacked-toasts demo
+    CodeBlock.tsx     Snippet frame with CopyButton
+  index.css           Design tokens, type scale and component styles
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+To add an entry, append an object to `entries` in `src/entries.ts`. Toast timings are defined in both `index.css` and `ToastDemo.tsx`; keep them in step.
+
+## Running locally
+
+```bash
+npm install
+```
+
+```bash
+npm run dev
+```
+
+Other scripts: `npm run build` (type-check and production build), `npm run preview`, `npm run lint`.
