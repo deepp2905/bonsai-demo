@@ -28,6 +28,7 @@
   /* Families */
   --font-display: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-text: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, monospace;
 
   color-scheme: light;
 }
@@ -124,13 +125,50 @@ body {
 }
 
 /* ============================================================
+   Navigation
+   ============================================================ */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.nav__link {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 150ms ease-out;
+}
+
+.nav__link:hover {
+  color: var(--text-primary);
+}
+
+.nav__link[aria-current='page'] {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+/* ============================================================
    Page
    ============================================================ */
 
 .page {
   max-width: 40rem;
   margin: 0 auto;
-  padding: 6rem 1.5rem 9rem;
+  padding: 5rem 1.5rem 9rem;
+}
+
+.page--wide {
+  max-width: 52rem;
 }
 
 .masthead {
@@ -139,7 +177,12 @@ body {
 
 .masthead__sub {
   margin-top: 0.875rem;
+  max-width: 42rem;
   color: var(--text-muted);
+}
+
+.masthead__note {
+  margin-top: 0.75rem;
 }
 
 .section + .section {
@@ -151,7 +194,116 @@ body {
   color: var(--text-muted);
 }
 
-/* Specimen sheet */
+/* ============================================================
+   Gallery entries
+   ============================================================ */
+
+.entries {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.entry__head {
+  margin-bottom: 1rem;
+}
+
+.entry__title {
+  margin-top: 0.375rem;
+}
+
+.entry__context {
+  max-width: 42rem;
+}
+
+/* ============================================================
+   Media slots
+   ============================================================ */
+
+.slot {
+  margin: 1.75rem 0 0;
+}
+
+.slot__frame {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--neutral-100);
+}
+
+.slot__label {
+  text-align: center;
+  text-wrap: balance;
+}
+
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.compare .slot {
+  margin: 0;
+}
+
+@media (max-width: 40rem) {
+  .compare {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Code
+   ============================================================ */
+
+.code {
+  margin: 1.5rem 0 0;
+}
+
+.code__pre {
+  margin: 0;
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.625rem;
+  background: var(--neutral-100);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.code__caption {
+  margin-top: 0.5rem;
+}
+
+/* ============================================================
+   Miscellaneous
+   ============================================================ */
+
+.misc {
+  list-style: none;
+  margin: 2rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 1.5rem;
+}
+
+.misc__item .slot {
+  margin: 0;
+}
+
+.misc__note {
+  margin-top: 0.625rem;
+}
+
+/* ============================================================
+   Specimen sheet
+   ============================================================ */
 
 .specimens {
   margin-top: 2rem;
@@ -167,7 +319,9 @@ body {
   margin-bottom: 0.875rem;
 }
 
-/* Palette */
+/* ============================================================
+   Palette
+   ============================================================ */
 
 .palette {
   margin: 2rem 0 0;
@@ -196,7 +350,9 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Example */
+/* ============================================================
+   Example
+   ============================================================ */
 
 .demo-card {
   margin-top: 2rem;
