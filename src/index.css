@@ -308,9 +308,14 @@ body {
   transition-timing-function: ease-out;
 }
 
-.copy:hover {
-  background: var(--neutral-300);
-  color: var(--ink);
+/* The frame is the hover target, so the button lights up from anywhere
+   inside the snippet. Hovering the button itself counts as inside the frame.
+   Gated on a real pointer so a tap does not leave it stuck filled. */
+@media (hover: hover) {
+  .code__frame:hover .copy {
+    background: var(--neutral-300);
+    color: var(--ink);
+  }
 }
 
 .copy:focus-visible {
