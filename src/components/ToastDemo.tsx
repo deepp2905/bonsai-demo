@@ -1,15 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
-import type { CSSProperties } from 'react'
+import type { CSSProperties, FocusEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { motion } from 'motion/react'
 import { Check, X } from 'lucide-react'
 
-/** How long each toast lives, measured from when it arrives. Paused while the stack is hovered. */
+/**
+ * How long each toast lives, measured from when it arrives. Paused while the stack
+ * is hovered; in After, leaving the stack restarts it from the full lifetime.
+ */
 const LIFETIME_MS = 4000
 /** How many toasts can be on screen at once; a new one past this pushes the oldest out. */
 const MAX_VISIBLE = 4
 /** After only: how many pushed-out toasts wait off screen to come back. Past this, the oldest is dropped. */
 const MAX_HIDDEN = 6
+/** After only: gap between each toast's expiry after the stack is released, oldest first. */
+const RESTART_STAGGER_MS = 150
 /** After only: how long a returning toast takes to drop back in. Matches the entry timing. */
 const RETURN_MS = 260
 
@@ -18,12 +23,13 @@ const RETURN_MS = 260
  * - expire:   its time ran out. It dips 32px and fades, 160ms.
  * - overflow: a new toast pushed it past the cap. It is carried up one slot
  *             with the stack, fading, on the 260ms entry timing.
- * - close:    the person pressed close or Undo. It drops 64px and fades, 200ms.
+ * - close:    the person pressed close or Undo. It drops 64px and fades, 260ms,
+ *             while the toasts above close the gap on the same 260ms.
  */
 type ExitKind = 'expire' | 'overflow' | 'close'
 
 /** How long each exit runs, so the toast is removed once it has finished. Mirrors index.css. */
-const AFTER_EXIT_MS: Record<ExitKind, number> = { expire: 160, overflow: 260, close: 200 }
+const AFTER_EXIT_MS: Record<ExitKind, number> = { expire: 160, overflow: 260, close: 260 }
 /** Before uses one plain 200ms fade, whatever the reason. */
 const BEFORE_EXIT_MS: Record<ExitKind, number> = { expire: 200, overflow: 200, close: 200 }
 
@@ -98,7 +104,12 @@ function refill(list: Toast[], keepHidden: boolean) {
  * With `keepHidden`, toasts pushed out by overflow wait off screen and come
  * back when a slot frees up.
  */
-function useToastQueue(exitMs: Record<ExitKind, number>, keepHidden: boolean) {
+function useToastQueue(
+  exitMs: Record<ExitKind, number>,
+  keepHidden: boolean,
+  /** After: leaving the stack gives every toast a fresh full lifetime, not just what it had left. */
+  restartOnLeave: boolean,
+) {
   const [toasts, setToasts] = useState<Toast[]>([])
   /** What the last change was, so the toasts that move use entry or exit timing. */
   const [phase, setPhase] = useState<'enter' | 'exit'>('enter')
@@ -175,12 +186,37 @@ function useToastQueue(exitMs: Record<ExitKind, number>, keepHidden: boolean) {
     })
   }
 
-  /** Pointer and focus have left the stack: run out the rest of every clock. */
+  /** Pointer and focus have left the stack: restart every clock, or run out what each had left. */
   function resume() {
     held.current = false
     const now = performance.now()
+
+    // With a restart, everyone gets a fresh lifetime, staggered so the toasts
+    // leave one at a time, oldest (top) first. Hidden toasts go first and
+    // silently, so none of them refills a slot just to expire straight after.
+    const order = restartOnLeave
+      ? [
+          ...toasts.filter((toast) => toast.status === 'hidden' || toast.exit === 'overflow'),
+          ...toasts.filter(isShown),
+        ].map((toast) => toast.id)
+      : [...clocks.current.keys()]
+    const shownCount = toasts.filter(isShown).length
+    const firstShown = order.length - shownCount
+
+    order.forEach((id, index) => {
+      const clock = clocks.current.get(id)
+      if (!clock || clock.timer !== undefined) return
+      if (restartOnLeave) {
+        clock.remaining = LIFETIME_MS + Math.max(index - firstShown, 0) * RESTART_STAGGER_MS
+      }
+      clock.startedAt = now
+      clock.timer = window.setTimeout(() => dismiss(id, 'expire'), Math.max(clock.remaining, 0))
+    })
+
+    // Anything the ordering missed still gets its clock back.
     clocks.current.forEach((clock, id) => {
       if (clock.timer !== undefined) return
+      if (restartOnLeave) clock.remaining = LIFETIME_MS
       clock.startedAt = now
       clock.timer = window.setTimeout(() => dismiss(id, 'expire'), Math.max(clock.remaining, 0))
     })
@@ -263,18 +299,6 @@ function useToastQueue(exitMs: Record<ExitKind, number>, keepHidden: boolean) {
   return { toasts, phase, push, dismiss, pause, resume, clear }
 }
 
-/** Hover and keyboard focus anywhere on the stack hold every toast on screen. */
-type HoldHandlers = { pause: () => void; resume: () => void }
-
-function holdProps({ pause, resume }: HoldHandlers) {
-  return {
-    onPointerEnter: pause,
-    onPointerLeave: resume,
-    onFocus: pause,
-    onBlur: resume,
-  }
-}
-
 function CloseButton({ onClick }: { onClick: () => void }) {
   return (
     <button type="button" className="toast__close" onClick={onClick} aria-label="Dismiss">
@@ -290,11 +314,9 @@ function CloseButton({ onClick }: { onClick: () => void }) {
 function StaticStack({
   toasts,
   onDismiss,
-  hold,
 }: {
   toasts: Toast[]
   onDismiss: (id: number) => void
-  hold: HoldHandlers
 }) {
   return (
     <ol className="toast-stack toast-stack--static">
@@ -303,7 +325,6 @@ function StaticStack({
           key={toast.id}
           className={`toast toast--plain${toast.status === 'leaving' ? ' toast--fading' : ''}`}
           aria-hidden={toast.status === 'leaving' || undefined}
-          {...holdProps(hold)}
         >
           <div className="toast__copy">
             <p className="toast__title">{toast.title}</p>
@@ -326,13 +347,11 @@ function AnimatedStack({
   phase,
   onDismiss,
   onUndo,
-  hold,
 }: {
   toasts: Toast[]
   phase: 'enter' | 'exit'
   onDismiss: (id: number) => void
   onUndo: (id: number) => void
-  hold: HoldHandlers
 }) {
   const shown = toasts.filter(isShown)
 
@@ -359,7 +378,6 @@ function AnimatedStack({
             style={{ '--slot': slot } as CSSProperties}
             aria-hidden={leaving || undefined}
             inert={leaving || undefined}
-            {...holdProps(hold)}
           >
             <div className="toast__copy">
               <p className="toast__title">{toast.title}</p>
@@ -421,36 +439,103 @@ function DemoFrame({
  * share that corner, so triggering one clears the other's toasts.
  */
 export function ToastCompare() {
-  const before = useToastQueue(BEFORE_EXIT_MS, false)
-  const after = useToastQueue(AFTER_EXIT_MS, true)
+  const before = useToastQueue(BEFORE_EXIT_MS, false, false)
+  const after = useToastQueue(AFTER_EXIT_MS, true, true)
   const [mode, setMode] = useState<'before' | 'after'>('after')
-  const resumeBefore = before.resume
-  const resumeAfter = after.resume
-
-  // A toast removed from under the pointer never fires pointerleave, which would
-  // leave the stack frozen. Any pointer movement off the toasts releases the hold,
-  // unless keyboard focus is still inside the stack. Resuming is a no-op when
-  // nothing is held, so both queues can be released.
+  const queue = mode === 'before' ? before : after
+  const queueRef = useRef(queue)
   useEffect(() => {
-    function onMove(event: PointerEvent) {
-      const target = event.target as Element | null
-      if (target?.closest('.toast:not(.toast--leaving, .toast--fading)')) return
-      if (document.activeElement?.closest('.toast-viewport')) return
-      resumeBefore()
-      resumeAfter()
+    queueRef.current = queue
+  })
+
+  /*
+   * Holding the stack. The stack is held while the pointer is anywhere inside
+   * the area it covers (top of the highest toast to the bottom of the lowest,
+   * gaps included) or while keyboard focus is inside it. So closing the toast
+   * under the pointer keeps the hold, since the pointer is still in the stack;
+   * it releases only when the pointer leaves that area or no toasts remain.
+   */
+  const pointer = useRef<{ x: number; y: number } | null>(null)
+  const focusInside = useRef(false)
+  const holding = useRef(false)
+  const evaluate = useRef(() => {})
+
+  useEffect(() => {
+    function pointerInStack() {
+      const at = pointer.current
+      const viewport = document.querySelector('.toast-viewport')
+      if (!at || !viewport) return false
+
+      const cards = viewport.querySelectorAll('.toast:not(.toast--leaving, .toast--fading)')
+      if (cards.length === 0) return false
+
+      let top = Infinity
+      let bottom = -Infinity
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect()
+        top = Math.min(top, rect.top)
+        bottom = Math.max(bottom, rect.bottom)
+      })
+      const { left, right } = viewport.getBoundingClientRect()
+      return at.x >= left && at.x <= right && at.y >= top && at.y <= bottom
     }
+
+    evaluate.current = () => {
+      const want = focusInside.current || pointerInStack()
+      if (want === holding.current) return
+      holding.current = want
+      if (want) queueRef.current.pause()
+      else queueRef.current.resume()
+    }
+
+    function onMove(event: PointerEvent) {
+      pointer.current = { x: event.clientX, y: event.clientY }
+      evaluate.current()
+    }
+
+    function onLeaveWindow() {
+      pointer.current = null
+      evaluate.current()
+    }
+
     document.addEventListener('pointermove', onMove)
-    return () => document.removeEventListener('pointermove', onMove)
-  }, [resumeBefore, resumeAfter])
+    document.documentElement.addEventListener('pointerleave', onLeaveWindow)
+    return () => {
+      document.removeEventListener('pointermove', onMove)
+      document.documentElement.removeEventListener('pointerleave', onLeaveWindow)
+    }
+  }, [])
+
+  // Toasts arriving or leaving change the stack's area: check again even if the pointer is still.
+  useEffect(() => {
+    evaluate.current()
+  }, [before.toasts, after.toasts])
+
+  function onStackFocus() {
+    focusInside.current = true
+    evaluate.current()
+  }
+
+  function onStackBlur(event: FocusEvent<HTMLElement>) {
+    if (event.currentTarget.contains(event.relatedTarget as Node | null)) return
+    focusInside.current = false
+    evaluate.current()
+  }
 
   function renderBefore() {
-    if (mode !== 'before') after.clear()
+    if (mode !== 'before') {
+      after.clear()
+      holding.current = false
+    }
     setMode('before')
     before.push()
   }
 
   function renderAfter() {
-    if (mode !== 'after') before.clear()
+    if (mode !== 'after') {
+      before.clear()
+      holding.current = false
+    }
     setMode('after')
     after.push()
   }
@@ -479,16 +564,21 @@ export function ToastCompare() {
       </div>
 
       {createPortal(
-        <section className="toast-viewport" aria-label="Notifications" aria-live="polite">
+        <section
+          className="toast-viewport"
+          aria-label="Notifications"
+          aria-live="polite"
+          onFocus={onStackFocus}
+          onBlur={onStackBlur}
+        >
           {mode === 'before' ? (
-            <StaticStack toasts={before.toasts} onDismiss={before.dismiss} hold={before} />
+            <StaticStack toasts={before.toasts} onDismiss={before.dismiss} />
           ) : (
             <AnimatedStack
               toasts={after.toasts}
               phase={after.phase}
               onDismiss={after.dismiss}
               onUndo={undo}
-              hold={after}
             />
           )}
         </section>,

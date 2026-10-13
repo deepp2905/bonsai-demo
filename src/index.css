@@ -286,7 +286,8 @@ body {
   --toast-gap: 0.5rem;
   --toast-enter-ms: 260ms;
   /* Exit timings: keep in step with AFTER_EXIT_MS in ToastDemo.tsx. */
-  --toast-exit-ms: 200ms;
+  --toast-exit-ms: 260ms;
+  --toast-fade-ms: 200ms; /* Before's plain fade */
   --toast-expire-ms: 160ms;
   --toast-expire-dip: 2rem;
   --toast-ease: cubic-bezier(0.33, 1, 0.68, 1);
@@ -375,7 +376,7 @@ body {
 
 /* Before exits with a plain fade in place; nothing moves until it is gone. */
 .toast--plain {
-  transition: opacity var(--toast-exit-ms) ease-out;
+  transition: opacity var(--toast-fade-ms) ease-out;
 }
 
 .toast--fading {
@@ -475,7 +476,7 @@ body {
   pointer-events: none;
 }
 
-/* Closed or undone: drops one toast height from its slot, 200ms, the same
+/* Closed or undone: drops one toast height from its slot, 260ms, the same
    direction the toasts above it move to close the gap. */
 .toast--exit-close {
   translate: 0 calc(var(--slot) * var(--step) * -1 + var(--toast-h));

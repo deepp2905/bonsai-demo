@@ -29,8 +29,8 @@ export const entries: Entry[] = [
     opacity 260ms cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.toast[data-leaving] {
-  transition-duration: 200ms;
+.toast[data-exit='expire'] {
+  transition-duration: 160ms;
 }`,
     codeCaption: 'Transitions rather than keyframes, so a mid-flight toast retargets instead of restarting.',
     media: { kind: 'demo', demo: 'toasts' },
