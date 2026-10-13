@@ -303,22 +303,40 @@ body {
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  transition-property: background-color, color, scale;
+  transition-property: background-color, color, opacity, scale;
   transition-duration: 150ms;
   transition-timing-function: ease-out;
 }
 
-/* The frame is the hover target, so the button lights up from anywhere
-   inside the snippet. Hovering the button itself counts as inside the frame.
-   Gated on a real pointer so a tap does not leave it stuck filled. */
+/* Two separate triggers:
+   the frame reveals the icon, the button itself shows the fill.
+   The reveal sits on the button, not the icon, because Motion writes the
+   icon's opacity inline and would win over any rule on .copy__icon.
+   Gated on a real pointer, so a tap cannot leave it stuck revealed. */
 @media (hover: hover) {
+  .copy {
+    opacity: 0;
+  }
+
   .code__frame:hover .copy {
+    opacity: 1;
+  }
+
+  .copy:hover {
     background: var(--neutral-200);
     color: var(--ink);
   }
 }
 
+/* No hover to reveal it with: keep it permanently visible. */
+@media (hover: none) {
+  .copy {
+    opacity: 1;
+  }
+}
+
 .copy:focus-visible {
+  opacity: 1;
   outline: 2px solid var(--neutral-600);
   outline-offset: 2px;
 }
