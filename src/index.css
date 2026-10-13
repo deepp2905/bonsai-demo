@@ -260,6 +260,315 @@ body {
 }
 
 /* ============================================================
+   Toast demo
+   ============================================================ */
+
+.demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 9rem;
+  padding: 1.5rem 1rem;
+}
+
+.slot__caption {
+  margin-top: 0.625rem;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* The page's toast corner, bottom right. It grows upward from the bottom
+   and never takes clicks itself; only the toasts do. */
+.toast-viewport {
+  --toast-h: 4rem;
+  --toast-gap: 0.5rem;
+  --toast-enter-ms: 260ms;
+  /* Exit timings: keep in step with AFTER_EXIT_MS in ToastDemo.tsx. */
+  --toast-exit-ms: 200ms;
+  --toast-expire-ms: 160ms;
+  --toast-expire-dip: 2rem;
+  --toast-ease: cubic-bezier(0.33, 1, 0.68, 1);
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 100;
+  width: min(22rem, calc(100vw - 2rem));
+  height: calc(var(--toast-h) * 4 + var(--toast-gap) * 3); /* MAX_VISIBLE in ToastDemo.tsx */
+  pointer-events: none;
+}
+
+@media (max-width: 40rem) {
+  .toast-viewport {
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+.toast-stack {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Fixed height, so the stack can place toasts by slot without measuring. */
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: var(--toast-h);
+  padding: 0 0.625rem 0 1rem;
+  pointer-events: auto;
+}
+
+.toast__copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast__title,
+.toast__body {
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.toast__title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.toast__body {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.toast__close {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background-color 150ms ease-out, color 150ms ease-out;
+}
+
+/* Before: the reference treatment, in light mode. A flat card; the close sits top right. */
+.toast--plain {
+  align-items: flex-start;
+  padding-top: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--neutral-50);
+}
+
+/* Before exits with a plain fade in place; nothing moves until it is gone. */
+.toast--plain {
+  transition: opacity var(--toast-exit-ms) ease-out;
+}
+
+.toast--fading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toast--plain .toast__close {
+  margin-top: -0.25rem;
+}
+
+/* After: a more considered card. Softer edge, layered shadow, and Undo as the
+   primary action, set as text so it cannot be confused with the close. */
+.toast--rich {
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.875rem;
+  background: oklch(1 0 0);
+  box-shadow:
+    0 0 0 1px oklch(0.215 0.012 65 / 0.02),
+    0 1px 2px oklch(0.215 0.012 65 / 0.05),
+    0 6px 16px -4px oklch(0.215 0.012 65 / 0.1);
+}
+
+.toast__undo {
+  flex: none;
+  height: 1.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--neutral-50);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out;
+}
+
+@media (hover: hover) {
+  .toast__close:hover {
+    background: var(--neutral-200);
+    color: var(--ink);
+  }
+
+  .toast__undo:hover {
+    background: var(--neutral-200);
+    border-color: var(--neutral-400);
+  }
+}
+
+.toast__close:focus-visible,
+.toast__undo:focus-visible {
+  outline: 2px solid var(--neutral-600);
+  outline-offset: 2px;
+}
+
+/* Before: plain flow. Every add or removal reflows in one frame. */
+.toast-stack--static {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--toast-gap);
+  height: 100%;
+}
+
+/* After: each toast is placed by its slot, and the placement transitions. */
+.toast-stack--animated {
+  position: absolute;
+  inset: 0;
+}
+
+.toast--animated {
+  --step: calc(var(--toast-h) + var(--toast-gap));
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  translate: 0 calc(var(--slot) * var(--step) * -1);
+  /* Entry timing: a soft ease-out, for the new toast and the stack it pushes. */
+  transition:
+    translate var(--toast-enter-ms) var(--toast-ease),
+    opacity var(--toast-enter-ms) var(--toast-ease);
+}
+
+/* A new toast rises one toast height into slot 0, fading in as it goes. */
+@starting-style {
+  .toast--animated {
+    translate: 0 var(--toast-h);
+    opacity: 0;
+  }
+}
+
+/* Every leaving toast fades and sits behind the others, so if it crosses one
+   it slides under rather than over. Where it goes depends on why it left. */
+.toast--leaving {
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Closed or undone: drops one toast height from its slot, 200ms, the same
+   direction the toasts above it move to close the gap. */
+.toast--exit-close {
+  translate: 0 calc(var(--slot) * var(--step) * -1 + var(--toast-h));
+  transition-duration: var(--toast-exit-ms);
+}
+
+/* Expired: dips 32px from its slot, 160ms. */
+.toast--exit-expire {
+  translate: 0 calc(var(--slot) * var(--step) * -1 + var(--toast-expire-dip));
+  transition-duration: var(--toast-expire-ms);
+}
+
+/* Pushed out by a new arrival: carried up one slot with the stack, on its timing. */
+.toast--exit-overflow {
+  translate: 0 calc((var(--slot) + 1) * var(--step) * -1);
+  transition-duration: var(--toast-enter-ms);
+}
+
+/* Toasts closing a gap left by an exit move on the exit timing. */
+.toast-stack--animated[data-phase='exit'] .toast--animated:not(.toast--leaving, .toast--returning) {
+  transition-duration: var(--toast-exit-ms);
+}
+
+/* Back from the overflow queue: the reverse of being pushed out. It drops one
+   slot into the top position, fading in, on the entry timing. */
+@starting-style {
+  .toast--animated.toast--returning {
+    translate: 0 calc((var(--slot) + 1) * var(--step) * -1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast--animated {
+    transition-property: opacity;
+  }
+
+  @starting-style {
+    .toast--animated {
+      translate: 0 0;
+    }
+  }
+
+  .toast--leaving {
+    translate: 0 calc(var(--slot) * var(--step) * -1);
+  }
+
+  @starting-style {
+    .toast--animated.toast--returning {
+      translate: 0 calc(var(--slot) * var(--step) * -1);
+    }
+  }
+}
+
+/* Fully rounded trigger. The press scale is a spring, driven by Motion. */
+.demo__button {
+  height: 2.25rem;
+  padding: 0 1.125rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--neutral-50);
+  color: var(--text-primary);
+  font-family: var(--font-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.demo__button:focus-visible {
+  outline: 2px solid var(--neutral-600);
+  outline-offset: 2px;
+}
+
+/* Verdict badges: small and quiet, a cue rather than a headline. */
+.verdict {
+  display: grid;
+  place-items: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+}
+
+.verdict--worse {
+  background: var(--neutral-200);
+  color: var(--neutral-600);
+}
+
+.verdict--better {
+  background: oklch(0.62 0.13 150);
+  color: var(--neutral-50);
+}
+
+/* ============================================================
    Code
    ============================================================ */
 
@@ -303,7 +612,7 @@ body {
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  transition-property: background-color, color, opacity, scale;
+  transition-property: background-color, color, opacity;
   transition-duration: 150ms;
   transition-timing-function: ease-out;
 }
@@ -312,13 +621,15 @@ body {
    the frame reveals the icon, the button itself shows the fill.
    The reveal sits on the button, not the icon, because Motion writes the
    icon's opacity inline and would win over any rule on .copy__icon.
-   Gated on a real pointer, so a tap cannot leave it stuck revealed. */
+   Gated on a real pointer, so a tap cannot leave it stuck revealed.
+   data-used keeps it visible for good once it has been clicked. */
 @media (hover: hover) {
   .copy {
     opacity: 0;
   }
 
-  .code__frame:hover .copy {
+  .code__frame:hover .copy,
+  .copy[data-used] {
     opacity: 1;
   }
 
@@ -339,10 +650,6 @@ body {
   opacity: 1;
   outline: 2px solid var(--neutral-600);
   outline-offset: 2px;
-}
-
-.copy:active {
-  scale: 0.96;
 }
 
 /* The cell is the swap's anchor: both icons stack here, so popLayout

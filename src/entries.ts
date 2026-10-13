@@ -1,5 +1,7 @@
 export type Media =
   | { kind: 'video'; label: string }
+  /** A live, working demo rendered by its own component. */
+  | { kind: 'demo'; demo: 'toasts' }
   | { kind: 'compare'; before: string; after: string }
 
 export type Entry = {
@@ -19,19 +21,19 @@ export const entries: Entry[] = [
     index: '01',
     title: 'Stacked toasts',
     context:
-      'Toasts used to arrive one at a time, each taking the same spot, so a second message replaced the first before it could be read. They now share a single stack: a new toast enters at the bottom and pushes the others up, and each one leaves on its own clock.',
+      'Toasts already stacked, but every change happened in a single frame: a new toast appeared and the others jumped up to make room, so it was hard to tell which one was new. They now share a single stack that moves as a unit: a new toast enters at the bottom and pushes the others up, and each one leaves on its own clock.',
     code: `.toast {
   /* Position animates, so the stack moves as a unit */
   transition:
-    translate 260ms cubic-bezier(0.2, 0, 0, 1),
-    opacity 200ms ease-out;
+    translate 260ms cubic-bezier(0.33, 1, 0.68, 1),
+    opacity 260ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.toast[data-leaving] {
+  transition-duration: 200ms;
 }`,
     codeCaption: 'Transitions rather than keyframes, so a mid-flight toast retargets instead of restarting.',
-    media: {
-      kind: 'compare',
-      before: 'Each toast replaces the last',
-      after: 'One stack, moving as a unit',
-    },
+    media: { kind: 'demo', demo: 'toasts' },
   },
   {
     id: 'menus',

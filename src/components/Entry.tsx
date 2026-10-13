@@ -1,5 +1,6 @@
 import { CodeBlock } from './CodeBlock'
 import { CompareSlot, MediaSlot } from './MediaSlot'
+import { ToastCompare } from './ToastDemo'
 import type { Entry as EntryData } from '../entries'
 
 /** One gallery entry: number, title, context, optional code, then the demo. */
@@ -17,6 +18,8 @@ export function Entry({ entry }: { entry: EntryData }) {
 
       {entry.media.kind === 'video' ? (
         <MediaSlot label={entry.media.label} />
+      ) : entry.media.kind === 'demo' ? (
+        <ToastCompare />
       ) : (
         <CompareSlot before={entry.media.before} after={entry.media.after} />
       )}
