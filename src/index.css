@@ -643,9 +643,16 @@ body {
   outline: none;
 }
 
+/* Hover is instant: no transition, so the highlight is wherever the pointer is. */
 @media (hover: hover) {
   .menu__item:hover {
     background: var(--neutral-100);
+  }
+
+  /* While the pointer is on a sibling (the After grace period), only the
+     hovered item is highlighted, not the one whose submenu is still open. */
+  .menu:has(> li > .menu__item:hover) > li > .menu__item[data-open]:not(:hover) {
+    background: transparent;
   }
 }
 
@@ -676,9 +683,9 @@ body {
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  transition: background-color 150ms ease-out, color 150ms ease-out;
 }
 
+/* Hover is instant, like the menu items: no fade between icons. */
 @media (hover: hover) {
   .toolbar__button:hover {
     background: var(--neutral-100);
