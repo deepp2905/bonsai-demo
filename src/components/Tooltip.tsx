@@ -20,10 +20,16 @@ let lastClosedAt = 0
 export function Tooltip({
   label,
   side = 'top',
+  variant = 'default',
   children,
 }: {
   label: ReactNode
   side?: 'top' | 'bottom'
+  /**
+   * scale: the naive treatment, kept for comparison. No dwell and no warm
+   * window: every tooltip opens at once and scales in over 200ms, every time.
+   */
+  variant?: 'default' | 'scale'
   children: ReactNode
 }) {
   const [open, setOpen] = useState(false)
@@ -45,6 +51,10 @@ export function Tooltip({
 
   function show(delay: number) {
     window.clearTimeout(timer.current)
+    if (variant === 'scale') {
+      setVisible(true, false)
+      return
+    }
     const warm = performance.now() - lastClosedAt < SKIP_DELAY_MS
     if (warm || delay === 0) {
       setVisible(true, warm)
@@ -56,7 +66,7 @@ export function Tooltip({
   function hide() {
     window.clearTimeout(timer.current)
     // Stamped now, not in a state updater, so the next trigger sees it on the same pointer move.
-    if (isOpen.current) lastClosedAt = performance.now()
+    if (isOpen.current && variant === 'default') lastClosedAt = performance.now()
     setVisible(false, false)
   }
 
@@ -88,6 +98,7 @@ export function Tooltip({
       <span
         className="tooltip"
         data-side={side}
+        data-variant={variant}
         data-open={open || undefined}
         data-instant={instant || undefined}
         aria-hidden="true"

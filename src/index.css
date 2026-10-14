@@ -824,6 +824,20 @@ body {
   transition-duration: 0ms;
 }
 
+/* Scale: the naive treatment. Grows from half size and shrinks back, 200ms
+   both ways, on every open. */
+.tooltip[data-variant='scale'] {
+  scale: 0.5;
+  transition:
+    opacity 200ms ease,
+    scale 200ms ease,
+    translate 200ms ease;
+}
+
+.tooltip[data-variant='scale'][data-open] {
+  scale: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tooltip,
   .tooltip[data-side] {
