@@ -399,28 +399,20 @@ function AnimatedStack({
   )
 }
 
-/** One demo frame: the trigger, and a small verdict badge below it. */
-function DemoFrame({
-  onRender,
-  verdict,
-  caption,
-}: {
-  onRender: () => void
-  verdict: 'better' | 'worse'
-  caption: string
-}) {
+/** One trigger and the small verdict badge below it. */
+function DemoTrigger({ onRender, verdict }: { onRender: () => void; verdict: 'better' | 'worse' }) {
   return (
-    <figure className="slot slot--half">
-      <div className="slot__frame demo">
-        <motion.button
-          type="button"
-          className="demo__button"
-          onClick={onRender}
-          whileTap={press}
-          transition={pressSpring}
-        >
-          Render Toast
-        </motion.button>
+    <div className="demo__trigger">
+      <motion.button
+        type="button"
+        className="demo__button"
+        onClick={onRender}
+        whileTap={press}
+        transition={pressSpring}
+      >
+        Render Toast
+      </motion.button>
+      <Tooltip label={verdict === 'better' ? 'Better' : 'Worse'}>
         <span
           className={`verdict verdict--${verdict}`}
           role="img"
@@ -432,9 +424,8 @@ function DemoFrame({
             <X size={10} strokeWidth={2.5} />
           )}
         </span>
-      </div>
-      <figcaption className="type-caption slot__caption">{caption}</figcaption>
-    </figure>
+      </Tooltip>
+    </div>
   )
 }
 
@@ -555,18 +546,15 @@ export function ToastCompare() {
 
   return (
     <>
-      <div className="compare">
-        <DemoFrame
-          onRender={renderBefore}
-          verdict="worse"
-          caption="Before — Stacked, but every toast jumps into place"
-        />
-        <DemoFrame
-          onRender={renderAfter}
-          verdict="better"
-          caption="After — One stack, moving as a unit, with undo"
-        />
-      </div>
+      <figure className="slot">
+        <div className="slot__frame demo">
+          <DemoTrigger onRender={renderBefore} verdict="worse" />
+          <DemoTrigger onRender={renderAfter} verdict="better" />
+        </div>
+        <figcaption className="type-caption slot__caption">
+          One stack that moves as a unit, so a new toast never jumps into place
+        </figcaption>
+      </figure>
 
       {createPortal(
         <section
