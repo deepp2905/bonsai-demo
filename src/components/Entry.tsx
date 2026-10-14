@@ -1,4 +1,3 @@
-import { CodeBlock } from './CodeBlock'
 import { MenuCompare } from './MenuDemo'
 import { ToastCompare } from './ToastDemo'
 import { TooltipCompare } from './TooltipDemo'
@@ -11,7 +10,7 @@ function Demo({ demo }: { demo: 'toasts' | 'menus' | 'tooltips' }) {
   return <ToastCompare />
 }
 
-/** One gallery entry: number, title, context, optional code, then the demo. */
+/** One gallery entry: number, title, context, then the demo. */
 export function Entry({ entry }: { entry: EntryData }) {
   return (
     <article className="entry" id={entry.id}>
@@ -21,8 +20,6 @@ export function Entry({ entry }: { entry: EntryData }) {
       </header>
 
       <p className="type-body entry__context">{entry.context}</p>
-
-      {entry.code ? <CodeBlock code={entry.code} caption={entry.codeCaption} /> : null}
 
       <Demo demo={entry.media.demo} />
     </article>

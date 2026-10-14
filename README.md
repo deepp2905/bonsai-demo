@@ -1,6 +1,6 @@
 # Bonsai interaction demo
 
-A design exploration that rebuilds a handful of interaction details from Bonsai. Each entry pairs the problem with the version that shipped, the reasoning behind it, the relevant code, and a demo. It is not an official Bonsai changelog.
+A design exploration that rebuilds a handful of interaction details from Bonsai. Each entry pairs the problem with the version that shipped, the reasoning behind it, and a demo. It is not an official Bonsai changelog.
 
 ## Pages
 
@@ -23,18 +23,18 @@ A design exploration that rebuilds a handful of interaction details from Bonsai.
 
 ```
 src/
-  entries.ts          Gallery content: title, context, code snippet and media per entry
+  entries.ts          Gallery content: title, context and demo per entry, plus Miscellaneous
   pages/              The Gallery page
   components/
     Entry.tsx         One gallery entry
-    MediaSlot.tsx     Demo, video placeholder or before/after comparison
+    MediaSlot.tsx     Placeholder frame for a demo still to come
     ToastDemo.tsx     The live stacked-toasts demo
     MenuDemo.tsx      The live pop-up menu demo
     TooltipDemo.tsx   The live toolbar tooltip demo
     CheckboxDemo.tsx  The checkbox with a self-drawing tick
     Tooltip.tsx       The shared tooltip
     DemoParts.tsx     Shared demo trigger and verdict badge
-    CodeBlock.tsx     Snippet frame with CopyButton
+    CopyButton.tsx    Copy button with the icon swap
   index.css           Design tokens, type scale and component styles
 ```
 

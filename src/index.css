@@ -28,7 +28,6 @@
   /* Families */
   --font-display: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-text: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, monospace;
 
   /* Vertical rhythm between top-level blocks */
   --gap-section: 5rem;
@@ -699,85 +698,34 @@ body {
 }
 
 /* ============================================================
-   Code
+   Copy button
    ============================================================ */
 
-.code {
-  margin: 1.5rem 0 0;
-}
-
-.code__frame {
-  position: relative;
-  border: 1px solid var(--border-subtle);
-  border-radius: 0.625rem;
-  background: var(--neutral-100);
-}
-
-.code__head {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-}
-
-.code__pre {
-  margin: 0;
-  padding: 1rem 3.25rem 1rem 1.125rem;
-  overflow-x: auto;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  line-height: 1.6;
-  color: var(--text-primary);
-}
-
-/* Copy button */
-
+/* Set as a button like the other demos' triggers. */
 .copy {
   display: grid;
   place-items: center;
-  width: 1.875rem;
-  height: 1.875rem;
+  width: 2.25rem;
+  height: 2.25rem;
   padding: 0;
-  border: 0;
-  border-radius: 0.375rem;
-  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--neutral-50);
   color: var(--text-muted);
   cursor: pointer;
-  transition-property: background-color, color, opacity;
+  transition-property: background-color, color;
   transition-duration: 150ms;
   transition-timing-function: ease-out;
 }
 
-/* Two separate triggers:
-   the frame reveals the icon, the button itself shows the fill.
-   The reveal sits on the button, not the icon, because Motion writes the
-   icon's opacity inline and would win over any rule on .copy__icon.
-   Gated on a real pointer, so a tap cannot leave it stuck revealed.
-   data-used keeps it visible for good once it has been clicked. */
 @media (hover: hover) {
-  .copy {
-    opacity: 0;
-  }
-
-  .code__frame:hover .copy,
-  .copy[data-used] {
-    opacity: 1;
-  }
-
   .copy:hover {
     background: var(--neutral-200);
     color: var(--ink);
   }
 }
 
-/* No hover to reveal it with: keep it permanently visible. */
-@media (hover: none) {
-  .copy {
-    opacity: 1;
-  }
-}
-
 .copy:focus-visible {
-  opacity: 1;
   outline: 2px solid var(--neutral-600);
   outline-offset: 2px;
 }
@@ -788,10 +736,6 @@ body {
   grid-area: 1 / 1;
   display: grid;
   place-items: center;
-}
-
-.code__caption {
-  margin-top: 0.5rem;
 }
 
 /* ============================================================
@@ -817,23 +761,6 @@ body {
 
 .misc__frame {
   aspect-ratio: 4 / 3;
-}
-
-/* Out of a code block there is no frame hover to reveal it, so the copy
-   button is always shown here, set as a button like the other demos. */
-.misc .copy {
-  width: 2.25rem;
-  height: 2.25rem;
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  background: var(--neutral-50);
-  opacity: 1;
-}
-
-@media (hover: hover) {
-  .misc .copy:hover {
-    background: var(--neutral-200);
-  }
 }
 
 /* Checkbox: the box fills on check while the tick draws itself in. */

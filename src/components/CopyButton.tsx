@@ -16,11 +16,8 @@ const spring = { type: 'spring', duration: 0.2, bounce: 0 } as const
 const HOLD_MS = 1600
 
 /** Copies its value to the clipboard and confirms by swapping the icon. */
-export function CopyButton({ value, label = 'Copy code' }: { value: string; label?: string }) {
+export function CopyButton({ value, label = 'Copy' }: { value: string; label?: string }) {
   const [copied, setCopied] = useState(false)
-  // Once the button has been used, it stays revealed for good: through the
-  // swap and afterwards, wherever the pointer goes.
-  const [used, setUsed] = useState(false)
   const timer = useRef<number | undefined>(undefined)
 
   useEffect(() => () => window.clearTimeout(timer.current), [])
@@ -35,7 +32,6 @@ export function CopyButton({ value, label = 'Copy code' }: { value: string; labe
     }
 
     setCopied(true)
-    setUsed(true)
     window.clearTimeout(timer.current)
     timer.current = window.setTimeout(() => setCopied(false), HOLD_MS)
   }
@@ -47,7 +43,6 @@ export function CopyButton({ value, label = 'Copy code' }: { value: string; labe
         className="copy"
         onClick={handleCopy}
         aria-label={copied ? 'Copied' : label}
-        data-used={used || undefined}
       >
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.span

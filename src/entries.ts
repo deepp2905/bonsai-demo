@@ -7,8 +7,6 @@ export type Entry = {
   title: string
   /** One to three lines. */
   context: string
-  code?: string
-  codeCaption?: string
   media: Media
 }
 

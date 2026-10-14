@@ -37,7 +37,7 @@ function Gallery() {
                 <figure className="slot">
                   <div className="slot__frame misc__frame">
                     {item.demo === 'copy' ? (
-                      <CopyButton value="npm install bonsai" label="Copy" />
+                      <CopyButton value="npm install bonsai" />
                     ) : (
                       <CheckboxDemo />
                     )}
