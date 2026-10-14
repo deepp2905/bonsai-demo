@@ -65,15 +65,15 @@ function Gallery() {
         </p>
         <ul className="type-body next-list">
           <li>
-            <strong>Boot-up loading screen:</strong> Use the screen space while Bonsai
+            <strong>Boot-up loading screen:</strong> Use the screen space productively while Bonsai
             starts up
           </li>
           <li>
-            <strong>Chat interface:</strong> Improving the moments where the user is asked
+            <strong>Chat interface:</strong> Interaction where the user is asked
             for input and given choices to pick from
           </li>
           <li>
-            <strong>Analytics page:</strong> Adding motion to graphs and charts
+            <strong>Analytics page:</strong> Improve visual hierarchy and add motion to graphs and charts
           </li>
         </ul>
       </section>
