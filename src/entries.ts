@@ -33,15 +33,12 @@ export const entries: Entry[] = [
     media: { kind: 'demo', demo: 'menus' },
   },
   {
-    id: 'hold-to-delete',
+    id: 'tooltips',
     index: '03',
-    title: 'Hold to delete',
+    title: 'Toolbar tooltips',
     context:
-      'A destructive action sat behind a single click, one slip away from losing the item. It now needs a hold: the control fills over 800ms with a ring that tracks progress, and releasing early cancels without a trace.',
-    media: {
-      kind: 'video',
-      label: 'Hold to delete — 800ms fill, early release cancels',
-    },
+      'Currently every tooltip scales in over 200ms, every time a new icon is hovered, so scanning a toolbar means watching the same animation again and again. In my version only the first tooltip waits a moment, to avoid opening by accident. Once one is open, the rest appear instantly, with no animation.',
+    media: { kind: 'demo', demo: 'tooltips' },
   },
 ]
 

@@ -2,11 +2,13 @@ import { CodeBlock } from './CodeBlock'
 import { CompareSlot, MediaSlot } from './MediaSlot'
 import { MenuCompare } from './MenuDemo'
 import { ToastCompare } from './ToastDemo'
+import { TooltipCompare } from './TooltipDemo'
 import type { Entry as EntryData } from '../entries'
 
 /** The live demo an entry names. */
 function Demo({ demo }: { demo: 'toasts' | 'menus' | 'tooltips' }) {
   if (demo === 'menus') return <MenuCompare />
+  if (demo === 'tooltips') return <TooltipCompare />
   return <ToastCompare />
 }
 

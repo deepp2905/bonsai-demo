@@ -640,6 +640,48 @@ body {
 }
 
 /* ============================================================
+   Tooltip demo
+   ============================================================ */
+
+.toolbar {
+  display: flex;
+  gap: 0.125rem;
+  padding: 0.25rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  background: oklch(1 0 0);
+  box-shadow:
+    0 1px 2px oklch(0.215 0.012 65 / 0.05),
+    0 4px 12px -4px oklch(0.215 0.012 65 / 0.08);
+}
+
+.toolbar__button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background-color 150ms ease-out, color 150ms ease-out;
+}
+
+@media (hover: hover) {
+  .toolbar__button:hover {
+    background: var(--neutral-100);
+    color: var(--ink);
+  }
+}
+
+.toolbar__button:focus-visible {
+  outline: 2px solid var(--neutral-600);
+  outline-offset: 2px;
+}
+
+/* ============================================================
    Code
    ============================================================ */
 
