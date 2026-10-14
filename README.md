@@ -4,12 +4,11 @@ A design exploration that rebuilds a handful of interaction details from Bonsai.
 
 ## Pages
 
-- **Interactions** (`/`): the gallery of entries.
+- **Interactions** (`/`): the gallery of entries. It is the only page.
   1. **Stacked toasts**: a live Before/After demo. New toasts enter at the bottom and push the stack up as a unit, each toast leaves on its own clock, and hovering or focusing the stack pauses every timer.
   2. **Origin-aware menus**: menus scale out of the click point instead of the element centre.
   3. **Hold to delete**: a destructive action that needs an 800ms hold, with a progress ring.
   4. **Miscellaneous**: smaller single-property details (button press, toggle, tooltip, checkbox).
-- **Type & Color** (`/typography`): the type scale (Satoshi) and the warm OKLCH neutral palette used across the site.
 
 ## Stack
 
@@ -24,7 +23,7 @@ A design exploration that rebuilds a handful of interaction details from Bonsai.
 ```
 src/
   entries.ts          Gallery content: title, context, code snippet and media per entry
-  pages/              Gallery and Typography pages
+  pages/              The Gallery page
   components/
     Entry.tsx         One gallery entry
     MediaSlot.tsx     Demo, video placeholder or before/after comparison

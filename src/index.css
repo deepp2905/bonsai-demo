@@ -128,39 +128,6 @@ body {
 }
 
 /* ============================================================
-   Navigation
-   ============================================================ */
-
-.nav {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 1rem 1.5rem;
-  background: color-mix(in oklab, var(--surface) 88%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.nav__link {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 150ms ease-out;
-}
-
-.nav__link:hover {
-  color: var(--text-primary);
-}
-
-.nav__link[aria-current='page'] {
-  color: var(--ink);
-  font-weight: 500;
-}
-
-/* ============================================================
    Page
    ============================================================ */
 
@@ -696,78 +663,6 @@ body {
   margin-top: 0.625rem;
 }
 
-/* ============================================================
-   Specimen sheet
-   ============================================================ */
-
-.specimens {
-  margin-top: 2rem;
-  border-top: 1px solid var(--border-subtle);
-}
-
-.specimen {
-  padding: 1.75rem 0;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.specimen__spec {
-  margin-bottom: 0.875rem;
-}
-
-/* ============================================================
-   Palette
-   ============================================================ */
-
-.palette {
-  margin: 2rem 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(8.75rem, 1fr));
-  gap: 1.5rem 1.25rem;
-}
-
-.swatch__chip {
-  height: 4.5rem;
-  border-radius: 0.625rem;
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06);
-}
-
-.swatch__step {
-  margin-top: 0.625rem;
-  color: var(--text-primary);
-}
-
-.swatch__value {
-  margin-top: 0.125rem;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-/* ============================================================
-   Example
-   ============================================================ */
-
-.demo-card {
-  margin-top: 2rem;
-  display: grid;
-  place-items: center;
-  padding: 5rem 1.5rem;
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-}
-
-.demo-circle {
-  width: 9rem;
-  height: 9rem;
-  background: var(--ink);
-  clip-path: circle(50%);
-}
-
-.demo-caption {
-  margin-top: 1rem;
-}
 /* ============================================================
    Tooltip
    ============================================================ */
