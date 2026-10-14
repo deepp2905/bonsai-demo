@@ -94,17 +94,6 @@ body {
   text-wrap: balance;
 }
 
-.type-subheading {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 500;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  text-wrap: balance;
-}
-
 .type-body {
   margin: 0;
   font-family: var(--font-text);
@@ -148,10 +137,6 @@ body {
 .masthead__sub {
   margin-top: 0.875rem;
   color: var(--text-muted);
-}
-
-.masthead__note {
-  margin-top: 0.75rem;
 }
 
 .section + .section,
