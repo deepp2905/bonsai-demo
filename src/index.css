@@ -704,33 +704,25 @@ body {
   bottom: calc(100% + var(--tooltip-offset) - 0.25rem);
 }
 
-/* Moving to another icon, it glides there and its width eases to fit the new
-   label, both 150ms ease-out, while the label stays centred and clips to it.
-   Opacity, scale and translate keep the tooltip's own timing. */
+/* Moving to another icon, it glides there, 150ms ease-out; its width simply
+   fits the new label. Opacity, scale and translate keep the tooltip's timing. */
 .tooltip.tooltip--shared {
-  overflow: hidden;
-  text-align: center;
-  transition-property: opacity, scale, translate, width, left;
-  transition-duration: 100ms, 100ms, 100ms, 150ms, 150ms;
+  transition-property: opacity, scale, translate, left;
+  transition-duration: 100ms, 100ms, 100ms, 150ms;
   transition-timing-function: ease-out;
 }
 
 .tooltip.tooltip--shared[data-open] {
-  transition-duration: 150ms, 150ms, 150ms, 150ms, 150ms;
+  transition-duration: 150ms, 150ms, 150ms, 150ms;
   transition-timing-function:
     cubic-bezier(0.33, 1, 0.68, 1),
     cubic-bezier(0.33, 1, 0.68, 1),
     cubic-bezier(0.33, 1, 0.68, 1),
-    ease-out,
     ease-out;
 }
 
 .tooltip.tooltip--shared[data-instant] {
-  transition-duration: 0ms, 0ms, 0ms, 150ms, 150ms;
-}
-
-.tooltip__label {
-  display: inline-block;
+  transition-duration: 0ms, 0ms, 0ms, 150ms;
 }
 
 .toolbar__button:focus-visible {

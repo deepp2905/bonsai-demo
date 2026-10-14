@@ -29,10 +29,10 @@ function BeforeToolbar() {
 
 /**
  * After: one tooltip for the whole toolbar. The first one waits a short dwell
- * and fades in; from then on it stays open, and moving to another icon jumps
- * it there and swaps the text. It glides to the new icon and its width eases
- * to fit the new label, both over 150ms. It closes when the pointer
- * leaves the toolbar, and reopens instantly if it comes back straight away.
+ * and fades in; from then on it stays open, and moving to another icon glides
+ * it there over 150ms and swaps the text, its width simply fitting the new
+ * label. It closes when the pointer leaves the toolbar, and reopens instantly
+ * if it comes back straight away.
  */
 function AfterToolbar() {
   const [open, setOpen] = useState(false)
@@ -44,27 +44,18 @@ function AfterToolbar() {
   const isOpen = useRef(false)
   const lastClosedAt = useRef(0)
   const tipRef = useRef<HTMLSpanElement>(null)
-  const labelRef = useRef<HTMLSpanElement>(null)
-  /** Whether it was open as of the last sizing, so only a switch while open animates. */
+  /** Whether it was open as of the last move, so only a move while open glides. */
   const wasOpen = useRef(false)
 
   /*
-   * Size the tooltip to its label. width: auto cannot transition, so the width
-   * is measured and set; CSS eases it, and the move to the new icon (left).
-   * While closed (or as it opens) it is placed and sized without animating, so
-   * it never glides or grows out of the last label it showed.
+   * CSS glides the tooltip between icons (left). While closed, or as it opens,
+   * it is placed without animating, so it never slides in from the last icon.
    */
   useLayoutEffect(() => {
     const tip = tipRef.current
-    const label = labelRef.current
-    if (!tip || !label) return
-    const style = getComputedStyle(tip)
-    const width = label.offsetWidth + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight)
-    if (wasOpen.current) {
-      tip.style.width = `${width}px`
-    } else {
+    if (!tip) return
+    if (!wasOpen.current) {
       tip.style.transitionProperty = 'opacity, scale, translate'
-      tip.style.width = `${width}px`
       void tip.offsetWidth
       tip.style.transitionProperty = ''
     }
@@ -165,9 +156,7 @@ function AfterToolbar() {
         style={{ left: x }}
         aria-hidden="true"
       >
-        <span ref={labelRef} className="tooltip__label">
-          {TOOLS[active].label}
-        </span>
+        {TOOLS[active].label}
       </span>
     </div>
   )
