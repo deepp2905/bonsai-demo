@@ -1,3 +1,5 @@
+import { CheckboxDemo } from '../components/CheckboxDemo'
+import { CopyButton } from '../components/CopyButton'
 import { Entry } from '../components/Entry'
 import { MediaSlot } from '../components/MediaSlot'
 import { entries, misc } from '../entries'
@@ -8,8 +10,7 @@ function Gallery() {
       <header className="masthead">
         <h1 className="type-display">Interaction improvements</h1>
         <p className="type-body masthead__sub">
-          Three interaction details from Bonsai, rebuilt. Each entry pairs the problem
-          with the version that shipped, the reasoning behind it, and the demo. Product feel smooth with 100s of small improvements like this over a few fancy animations.
+          Spotting the problem with the shipped interactions, the fix and the reasoning behind it.
         </p>
       </header>
 
@@ -32,8 +33,20 @@ function Gallery() {
         <ul className="misc">
           {misc.map((item) => (
             <li className="misc__item" key={item.label}>
-              <MediaSlot label={item.label} ratio="4 / 3" />
-              <p className="type-caption misc__note">{item.note}</p>
+              {item.demo ? (
+                <figure className="slot">
+                  <div className="slot__frame misc__frame">
+                    {item.demo === 'copy' ? (
+                      <CopyButton value="npm install bonsai" label="Copy" />
+                    ) : (
+                      <CheckboxDemo />
+                    )}
+                  </div>
+                </figure>
+              ) : (
+                <MediaSlot label={item.label} ratio="4 / 3" />
+              )}
+              {item.note ? <p className="type-caption misc__note">{item.note}</p> : null}
             </li>
           ))}
         </ul>

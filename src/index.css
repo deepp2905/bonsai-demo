@@ -847,6 +847,67 @@ body {
   margin-top: 0.625rem;
 }
 
+.misc__frame {
+  aspect-ratio: 4 / 3;
+}
+
+/* Out of a code block there is no frame hover to reveal it, so the copy
+   button is always shown here, set as a button like the other demos. */
+.misc .copy {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--neutral-50);
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .misc .copy:hover {
+    background: var(--neutral-200);
+  }
+}
+
+/* Checkbox: the box fills on check while the tick draws itself in. */
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-text);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.check__box {
+  display: grid;
+  place-items: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1px solid var(--neutral-400);
+  border-radius: 0.3125rem;
+  background: var(--neutral-50);
+  color: var(--neutral-50);
+  transition: background-color 150ms ease-out, border-color 150ms ease-out;
+}
+
+.check[aria-checked='true'] .check__box {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+
+.check:focus-visible {
+  outline: none;
+}
+
+.check:focus-visible .check__box {
+  outline: 2px solid var(--neutral-600);
+  outline-offset: 2px;
+}
+
 /* ============================================================
    Tooltip
    ============================================================ */

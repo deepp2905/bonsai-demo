@@ -42,11 +42,15 @@ export const entries: Entry[] = [
   },
 ]
 
-export type MiscItem = { label: string; note: string }
+export type MiscItem = {
+  label: string
+  note?: string
+  /** A live demo in the frame; without one, the frame is a labelled placeholder. */
+  demo?: 'copy' | 'check'
+}
 
 export const misc: MiscItem[] = [
-  { label: 'Button press', note: 'scale(0.96) on press' },
-  { label: 'Toggle', note: 'spring, no overshoot' },
-  { label: 'Tooltip', note: 'open delay, no flicker' },
-  { label: 'Checkbox', note: 'path draw on tick' },
+  { label: 'Copy button', note: 'The icon swaps to a tick with a quick blur', demo: 'copy' },
+  { label: 'Checkbox', note: 'The tick draws itself in as you check it', demo: 'check' },
+  { label: 'Coming soon' },
 ]
