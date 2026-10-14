@@ -24,7 +24,7 @@ export const entries: Entry[] = [
     index: '02',
     title: 'Pop-up menus',
     context:
-      'Currently the menu and its submenus to fade in and out, so moving between submenus feels slow and the fades overlap. In my version the menu opens and closes faster, and submenus switch instantly as you hover.',
+      'Currently the menu and its submenus fade in and out slowly, so moving between submenus feels slow and the fades overlap. In my version the menu opens and closes faster, and submenus switch instantly as you hover.',
     media: { kind: 'demo', demo: 'menus' },
   },
   {
