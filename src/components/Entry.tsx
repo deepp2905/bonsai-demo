@@ -17,7 +17,6 @@ export function Entry({ entry }: { entry: EntryData }) {
   return (
     <article className="entry" id={entry.id}>
       <header className="entry__head">
-        <p className="type-caption entry__index">{entry.index}</p>
         <div className="entry__title-row">
           <h2 className="type-heading entry__title">{entry.title}</h2>
           <CopyPromptButton prompt={prompts[entry.media.demo]} />

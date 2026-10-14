@@ -24,7 +24,6 @@ function Gallery() {
 
       <section className="section">
         <header className="entry__head">
-          <p className="type-caption entry__index">04</p>
           <div className="entry__title-row">
             <h2 className="type-heading entry__title">Miscellaneous</h2>
             <CopyPromptButton prompt={prompts.misc} />
@@ -59,7 +58,6 @@ function Gallery() {
 
       <section className="section">
         <header className="entry__head">
-          <p className="type-caption entry__index">05</p>
           <h2 className="type-heading entry__title">Final thoughts</h2>
         </header>
         <p className="type-body entry__context">
