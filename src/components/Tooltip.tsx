@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import type { FocusEvent, PointerEvent, ReactNode } from 'react'
 
 /** Hover dwell before the first tooltip opens. */
-const OPEN_DELAY_MS = 500
+export const OPEN_DELAY_MS = 500
 /** Scale variant: the dwell before every tooltip, with no warm window to skip it. */
 const SCALE_DELAY_MS = 300
 /** After one closes, another opens instantly for this long, so scanning a row of icons feels immediate. */
-const SKIP_DELAY_MS = 300
+export const SKIP_DELAY_MS = 300
 
 // Shared across every tooltip on the page: the moment the last one closed.
 let lastClosedAt = 0

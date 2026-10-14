@@ -668,6 +668,7 @@ body {
    ============================================================ */
 
 .toolbar {
+  position: relative;
   display: flex;
   gap: 0.125rem;
   padding: 0.25rem;
@@ -695,6 +696,12 @@ body {
     background: var(--neutral-100);
     color: var(--ink);
   }
+}
+
+/* After's one shared tooltip hangs off the toolbar, not a button, so it sits
+   the toolbar's padding lower to keep the same gap above an icon. */
+.tooltip.tooltip--shared[data-side='top'] {
+  bottom: calc(100% + var(--tooltip-offset) - 0.25rem);
 }
 
 .toolbar__button:focus-visible {

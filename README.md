@@ -7,7 +7,7 @@ A design exploration that rebuilds a handful of interaction details from Bonsai.
 - **Interactions** (`/`): the gallery of entries. It is the only page.
   1. **Stacked toasts**: a live Before/After demo. New toasts enter at the bottom and push the stack up as a unit, each toast leaves on its own clock, and hovering or focusing the stack pauses every timer.
   2. **Pop-up menus**: a live Before/After demo of a menu with submenus, opened by hovering the trigger. Before fades in and fades and shrinks out over 300ms. After opens in 150ms, closes with a 100ms fade, switches submenus instantly as you hover from one to the next, holding the open one for up to 150ms only while the pointer is heading into it.
-  3. **Toolbar tooltips**: a live Before/After demo on a rounded icon toolbar. Before waits 300ms and scales every tooltip in over 160ms on each hover. After waits 500ms before the first tooltip, then opens the rest instantly with no animation.
+  3. **Toolbar tooltips**: a live Before/After demo on a rounded icon toolbar. Before waits 300ms and scales every tooltip in over 160ms on each hover. After uses one shared tooltip: it waits 500ms the first time, then stays open, jumping to each icon you hover and swapping its text with no animation.
   4. **Miscellaneous**: smaller single-property details (button press, toggle, tooltip, checkbox).
   5. **Final thoughts**: the thinking behind the work: motion only where it does a job.
 
