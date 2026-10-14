@@ -415,7 +415,7 @@ export function MenuCompare() {
         <MenuDemo version="after" />
       </div>
       <figcaption className="type-caption slot__caption">
-        Hover Move to, then slide down to Share
+        Try moving through the menus quickly
       </figcaption>
     </figure>
   )

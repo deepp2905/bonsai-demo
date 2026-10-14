@@ -528,7 +528,7 @@ export function ToastCompare() {
           <DemoTrigger onRender={renderAfter} verdict="better" />
         </div>
         <figcaption className="type-caption slot__caption">
-          Render a few toasts in a row, then close one
+          Try rendering a few toasts, then closing some
         </figcaption>
       </figure>
 
