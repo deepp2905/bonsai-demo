@@ -368,6 +368,8 @@ function MenuDemo({ version }: { version: Version }) {
           ref={triggerRef}
           aria-haspopup="menu"
           aria-expanded={open}
+          // It opens on hover, so a press does nothing for a mouse: no press feedback.
+          whileTap={undefined}
           onPointerEnter={onPointerEnter}
           onPointerDown={(event) => {
             lastPointer.current = event.pointerType
