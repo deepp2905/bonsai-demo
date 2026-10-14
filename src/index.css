@@ -32,12 +32,12 @@
   /*
    * Vertical rhythm, one scale so related things sit closer than unrelated
    * ones: 8px label to heading, 12px heading to text and frame to caption,
-   * 32px text to demo, 96px between sections.
+   * 32px text to demo, 128px between sections.
    */
   --gap-label: 0.5rem;
   --gap-text: 0.75rem;
   --gap-media: 2rem;
-  --gap-section: 6rem;
+  --gap-section: 8rem;
 
   color-scheme: light;
 }
@@ -210,7 +210,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 3.75rem;
-  min-height: 11.25rem;
+  min-height: 16.875rem;
   padding: 2.25rem 1rem 1.5rem;
 }
 
