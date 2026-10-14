@@ -241,6 +241,21 @@ body {
   margin-top: 1rem;
 }
 
+/* Final thoughts: a short list of what comes next, set as body text. */
+.next-list {
+  margin: var(--gap-text) 0 0;
+  padding-left: 1.25rem;
+}
+
+.next-list li + li {
+  margin-top: 0.375rem;
+}
+
+.next-list strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 /* ============================================================
    Media slots
    ============================================================ */

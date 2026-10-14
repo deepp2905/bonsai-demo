@@ -10,9 +10,9 @@ function Gallery() {
   return (
     <main className="page page--wide">
       <header className="masthead">
-        <h1 className="type-display">Interaction improvements</h1>
+        <h1 className="type-display">Interaction improvements for Bonsai</h1>
         <p className="type-body masthead__sub">
-          Spotting the problem with the shipped interactions, the fix and the reasoning behind it.
+        The goal was to make the interface feel smoother and faster, and to use motion only where it is needed. Every animation here has a job: showing where a new toast came from, getting a menu out of the way once you are done with it, or getting a tooltip to you sooner.
         </p>
       </header>
 
@@ -63,16 +63,20 @@ function Gallery() {
           <h2 className="type-heading entry__title">Final thoughts</h2>
         </header>
         <p className="type-body entry__context">
-          The goal was to make the interface feel smoother and faster, and to use motion only
-          where it is needed. Every animation here has a job: showing where a new toast came
-          from, getting a menu out of the way once you are done with it, or getting a tooltip
-          to you sooner.
+          If I had to pick what to do next, I'd spend time on:
         </p>
-        <p className="type-body entry__context">
-          Motion should not be there to look fancy or to make something feel interactive. It
-          should add to the experience and make it better for the person using it, and when it
-          does not, the right amount of motion is none.
-        </p>
+        <ul className="type-body next-list">
+          <li>
+            <strong>Boot up Loading screen:</strong> Utilize the screen real estate while
+            Bonsai starts up
+          </li>
+          <li>
+            <strong>Chat interface:</strong> Improving ways the user is
+          </li>
+          <li>
+            <strong>Analytics page:</strong> Adding motion to graphs and charts
+          </li>
+        </ul>
       </section>
     </main>
   )

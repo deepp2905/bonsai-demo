@@ -9,7 +9,7 @@ A design exploration that rebuilds a handful of interaction details from Bonsai.
   2. **Pop-up menus**: a live Before/After demo of a menu with submenus, opened by pressing the trigger. Before fades in and fades and shrinks out over 300ms. After opens in 150ms, closes with a 100ms fade, switches submenus instantly as you hover from one to the next, holding the open one for up to 150ms only while the pointer is heading into it.
   3. **Toolbar tooltips**: a live Before/After demo on a rounded icon toolbar. Before waits 300ms and scales every tooltip in over 160ms on each hover. After wraps the same tooltips in a `TooltipGroup`, so they share one tooltip: it waits 500ms the first time (or opens at once inside the page-wide 300ms warm-up window), then stays open, gliding to each icon you hover over 150ms and swapping its text.
   4. **Miscellaneous**: smaller details, live: the copy button's icon swap and a checkbox whose tick draws itself in (SVG `pathLength`), with a third slot marked Coming soon.
-  5. **Final thoughts**: the thinking behind the work: motion only where it does a job.
+  5. **Final thoughts**: what I'd work on next: the boot-up loading screen, the chat interface and the analytics page.
 
 ## Stack
 
