@@ -2,6 +2,8 @@ import { MenuCompare } from './MenuDemo'
 import { ToastCompare } from './ToastDemo'
 import { TooltipCompare } from './TooltipDemo'
 import type { Entry as EntryData } from '../entries'
+import { prompts } from '../prompts'
+import { CopyPromptButton } from './CopyPromptButton'
 
 /** The live demo an entry names. */
 function Demo({ demo }: { demo: 'toasts' | 'menus' | 'tooltips' }) {
@@ -16,7 +18,10 @@ export function Entry({ entry }: { entry: EntryData }) {
     <article className="entry" id={entry.id}>
       <header className="entry__head">
         <p className="type-caption entry__index">{entry.index}</p>
-        <h2 className="type-heading entry__title">{entry.title}</h2>
+        <div className="entry__title-row">
+          <h2 className="type-heading entry__title">{entry.title}</h2>
+          <CopyPromptButton prompt={prompts[entry.media.demo]} />
+        </div>
       </header>
 
       <p className="type-body entry__context">{entry.context}</p>

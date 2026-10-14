@@ -24,6 +24,7 @@ A design exploration that rebuilds a handful of interaction details from Bonsai.
 ```
 src/
   entries.ts          Gallery content: title, context and demo per entry, plus Miscellaneous
+  prompts.ts          The Copy prompt text for each section: how its After version works
   pages/              The Gallery page
   components/
     Entry.tsx         One gallery entry
@@ -35,10 +36,11 @@ src/
     Tooltip.tsx       The shared tooltip
     DemoParts.tsx     Shared demo trigger and verdict badge
     CopyButton.tsx    Copy button with the icon swap
+    CopyPromptButton.tsx  The Copy prompt pill on each section title
   index.css           Design tokens, type scale and component styles
 ```
 
-To add an entry, append an object to `entries` in `src/entries.ts`. Toast timings are defined in both `index.css` and `ToastDemo.tsx`; keep them in step.
+Each entry and Miscellaneous has a Copy prompt button on its title row. It copies a stack-agnostic description of how the After version works, with exact timings, from `src/prompts.ts`; update it when a demo changes. To add an entry, append an object to `entries` in `src/entries.ts`. Toast timings are defined in both `index.css` and `ToastDemo.tsx`; keep them in step.
 
 ## Running locally
 

@@ -1,8 +1,10 @@
 import { CheckboxDemo } from '../components/CheckboxDemo'
 import { CopyButton } from '../components/CopyButton'
+import { CopyPromptButton } from '../components/CopyPromptButton'
 import { Entry } from '../components/Entry'
 import { MediaSlot } from '../components/MediaSlot'
 import { entries, misc } from '../entries'
+import { prompts } from '../prompts'
 
 function Gallery() {
   return (
@@ -23,7 +25,10 @@ function Gallery() {
       <section className="section">
         <header className="entry__head">
           <p className="type-caption entry__index">04</p>
-          <h2 className="type-heading entry__title">Miscellaneous</h2>
+          <div className="entry__title-row">
+            <h2 className="type-heading entry__title">Miscellaneous</h2>
+            <CopyPromptButton prompt={prompts.misc} />
+          </div>
         </header>
         <p className="type-body entry__context">
           Smaller details that did not need a full entry: single-property changes where

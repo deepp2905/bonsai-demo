@@ -173,6 +173,55 @@ body {
   margin-top: var(--gap-label);
 }
 
+/* A title with its Copy prompt button on the same line, pushed to the right. */
+.entry__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: var(--gap-label);
+}
+
+.entry__title-row .entry__title {
+  margin-top: 0;
+}
+
+/* Copy prompt: a small pill, set like the demo triggers but quieter. */
+.copy-prompt {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.375rem;
+  height: 2rem;
+  padding: 0 0.75rem 0 0.625rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--neutral-50);
+  color: var(--text-primary);
+  font-family: var(--font-text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 150ms ease-out;
+}
+
+@media (hover: hover) {
+  .copy-prompt:hover {
+    background: var(--neutral-100);
+  }
+}
+
+.copy-prompt:focus-visible {
+  outline: 2px solid var(--neutral-600);
+  outline-offset: 2px;
+}
+
+/* One cell for both icons, so the swap never shifts the label. */
+.copy-prompt__icon {
+  display: grid;
+  color: var(--text-muted);
+}
+
 .entry__context + .entry__context {
   margin-top: 1rem;
 }
