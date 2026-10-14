@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import type { KeyboardEvent, MouseEvent } from 'react'
+import type { KeyboardEvent, MouseEvent, PointerEvent as ReactPointerEvent } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import type { Variants } from 'motion/react'
 import { ChevronRight } from 'lucide-react'
@@ -28,6 +28,9 @@ const ITEMS: Item[] = [
   },
   { label: 'Delete', danger: true, separatorBefore: true },
 ]
+
+/** Both: how long the menu stays open after the pointer leaves it, so it can cross the gap from the trigger. */
+const MENU_CLOSE_MS = 150
 
 /** After only: how long an open submenu survives the pointer crossing a sibling on its way in. */
 const SUBMENU_GRACE_MS = 150
@@ -264,6 +267,10 @@ function MenuDemo({ version }: { version: Version }) {
   const [keyboard, setKeyboard] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const closeTimer = useRef<number | undefined>(undefined)
+  const lastPointer = useRef<string>('mouse')
+
+  useEffect(() => () => window.clearTimeout(closeTimer.current), [])
 
   useEffect(() => {
     if (!open) return
@@ -274,15 +281,45 @@ function MenuDemo({ version }: { version: Version }) {
     return () => document.removeEventListener('pointerdown', onPointerDown)
   }, [open])
 
+  /** A mouse opens it by hovering the trigger; no press needed. */
+  function onPointerEnter(event: ReactPointerEvent) {
+    if (event.pointerType !== 'mouse') return
+    window.clearTimeout(closeTimer.current)
+    setKeyboard(false)
+    setOpen(true)
+  }
+
+  /**
+   * Leaving the trigger and every open list closes it, after a moment, so the
+   * pointer can cross the gap between the trigger and the menu.
+   */
+  function onPointerLeave(event: ReactPointerEvent) {
+    if (event.pointerType !== 'mouse') return
+    window.clearTimeout(closeTimer.current)
+    closeTimer.current = window.setTimeout(() => setOpen(false), MENU_CLOSE_MS)
+  }
+
   return (
     <div className="demo__trigger">
-      <div className="menu-root" ref={rootRef}>
+      <div
+        className="menu-root"
+        ref={rootRef}
+        onPointerEnter={() => window.clearTimeout(closeTimer.current)}
+        onPointerLeave={onPointerLeave}
+      >
         <DemoButton
           ref={triggerRef}
           aria-haspopup="menu"
           aria-expanded={open}
+          onPointerEnter={onPointerEnter}
+          onPointerDown={(event) => {
+            lastPointer.current = event.pointerType
+          }}
           onClick={(event) => {
-            setKeyboard(event.detail === 0)
+            // Keyboard and touch have no hover, so they still open it by pressing.
+            const keyboardPress = event.detail === 0
+            if (!keyboardPress && lastPointer.current === 'mouse') return
+            setKeyboard(keyboardPress)
             setOpen((value) => !value)
           }}
         >
