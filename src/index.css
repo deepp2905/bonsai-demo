@@ -704,6 +704,33 @@ body {
   bottom: calc(100% + var(--tooltip-offset) - 0.25rem);
 }
 
+/* Its width eases to fit each new label, 100ms ease-out, while the label
+   stays centred and clips to it. Everything else keeps the tooltip's timing. */
+.tooltip.tooltip--shared {
+  overflow: hidden;
+  text-align: center;
+  transition-property: opacity, scale, translate, width;
+  transition-duration: 100ms, 100ms, 100ms, 100ms;
+  transition-timing-function: ease-out;
+}
+
+.tooltip.tooltip--shared[data-open] {
+  transition-duration: 150ms, 150ms, 150ms, 100ms;
+  transition-timing-function:
+    cubic-bezier(0.33, 1, 0.68, 1),
+    cubic-bezier(0.33, 1, 0.68, 1),
+    cubic-bezier(0.33, 1, 0.68, 1),
+    ease-out;
+}
+
+.tooltip.tooltip--shared[data-instant] {
+  transition-duration: 0ms, 0ms, 0ms, 100ms;
+}
+
+.tooltip__label {
+  display: inline-block;
+}
+
 .toolbar__button:focus-visible {
   outline: 2px solid var(--neutral-600);
   outline-offset: 2px;

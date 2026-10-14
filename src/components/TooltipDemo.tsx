@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { FocusEvent, PointerEvent } from 'react'
 import { Bold, Image, Italic, Link2, Smile } from 'lucide-react'
 import { Verdict } from './DemoParts'
@@ -30,7 +30,7 @@ function BeforeToolbar() {
 /**
  * After: one tooltip for the whole toolbar. The first one waits a short dwell
  * and fades in; from then on it stays open, and moving to another icon jumps
- * it there and swaps the text, with no animation. It closes when the pointer
+ * it there and swaps the text. Only its width eases, 100ms, to fit the new label. It closes when the pointer
  * leaves the toolbar, and reopens instantly if it comes back straight away.
  */
 function AfterToolbar() {
@@ -42,6 +42,32 @@ function AfterToolbar() {
   const timer = useRef<number | undefined>(undefined)
   const isOpen = useRef(false)
   const lastClosedAt = useRef(0)
+  const tipRef = useRef<HTMLSpanElement>(null)
+  const labelRef = useRef<HTMLSpanElement>(null)
+  /** Whether it was open as of the last sizing, so only a switch while open animates. */
+  const wasOpen = useRef(false)
+
+  /*
+   * Size the tooltip to its label. width: auto cannot transition, so the width
+   * is measured and set; CSS eases it. While closed (or as it opens) it is
+   * sized without animating, so it never grows out of the last label it showed.
+   */
+  useLayoutEffect(() => {
+    const tip = tipRef.current
+    const label = labelRef.current
+    if (!tip || !label) return
+    const style = getComputedStyle(tip)
+    const width = label.offsetWidth + parseFloat(style.paddingLeft) + parseFloat(style.paddingRight)
+    if (wasOpen.current) {
+      tip.style.width = `${width}px`
+    } else {
+      tip.style.transitionProperty = 'opacity, scale, translate'
+      tip.style.width = `${width}px`
+      void tip.offsetWidth
+      tip.style.transitionProperty = ''
+    }
+    wasOpen.current = open
+  }, [active, open])
 
   useEffect(() => () => window.clearTimeout(timer.current), [])
 
@@ -129,6 +155,7 @@ function AfterToolbar() {
         </button>
       ))}
       <span
+        ref={tipRef}
         className="tooltip tooltip--shared"
         data-side="top"
         data-open={open || undefined}
@@ -136,7 +163,9 @@ function AfterToolbar() {
         style={{ left: x }}
         aria-hidden="true"
       >
-        {TOOLS[active].label}
+        <span ref={labelRef} className="tooltip__label">
+          {TOOLS[active].label}
+        </span>
       </span>
     </div>
   )
