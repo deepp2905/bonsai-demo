@@ -38,6 +38,24 @@ function Gallery() {
           ))}
         </ul>
       </section>
+
+      <section className="section">
+        <header className="entry__head">
+          <p className="type-caption entry__index">05</p>
+          <h2 className="type-heading entry__title">Final thoughts</h2>
+        </header>
+        <p className="type-body entry__context">
+          The goal was to make the interface feel smoother and faster, and to use motion only
+          where it is needed. Every animation here has a job: showing where a new toast came
+          from, getting a menu out of the way once you are done with it, or getting a tooltip
+          to you sooner.
+        </p>
+        <p className="type-body entry__context">
+          Motion should not be there to look fancy or to make something feel interactive. It
+          should add to the experience and make it better for the person using it, and when it
+          does not, the right amount of motion is none.
+        </p>
+      </section>
     </main>
   )
 }
