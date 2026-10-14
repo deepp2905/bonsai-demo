@@ -87,8 +87,6 @@ function MenuList({
   const [openIndex, setOpenIndex] = useState<number | null>(null)
   /** After: the last change swapped one submenu for another, so neither animates. */
   const [swapped, setSwapped] = useState(false)
-  /** Opens to the left when there is no room on the right. */
-  const [flip, setFlip] = useState(false)
   const listRef = useRef<HTMLUListElement>(null)
   const grace = useRef<number | undefined>(undefined)
   /** The open submenu was opened from the keyboard, so focus moves into it. */
@@ -100,13 +98,37 @@ function MenuList({
     if (autoFocus) listRef.current?.querySelector<HTMLButtonElement>(':scope > li > button')?.focus()
   }, [autoFocus])
 
+  /**
+   * Where it sits, written straight to the element (data-place) because it is
+   * measured, not state. right: the default. left: no room on the right.
+   * overlap (submenus only): no room either side, as on a phone, so it
+   * cascades down and right over its parent instead. CSS sets the matching
+   * transform origin for each.
+   */
   useLayoutEffect(() => {
     const list = listRef.current
     if (!list) return
-    const frame = list.closest('.slot__frame')
-    const limit = frame ? frame.getBoundingClientRect().right : window.innerWidth
-    if (list.getBoundingClientRect().right > limit - 4) setFlip(true)
-  }, [])
+    // Measure from the default spot, even if an earlier run already moved it.
+    list.dataset.place = 'right'
+    const frame = list.closest('.slot__frame')?.getBoundingClientRect()
+    const minX = (frame?.left ?? 0) + 4
+    const maxX = (frame?.right ?? window.innerWidth) - 4
+    // offsetWidth, not the rect: the rect is still scaled by the entry animation.
+    const width = list.offsetWidth
+    const left = list.getBoundingClientRect().left
+    let place = 'right'
+    if (left + width > maxX) {
+      place = 'left'
+      if (sub) {
+        // Flipped, it sits the same gap to the left of its parent list.
+        const parent = list.parentElement?.closest('.menu')?.getBoundingClientRect()
+        const gap = parent ? left - parent.right : 0
+        const flippedLeft = (parent?.left ?? left) - gap - width
+        if (flippedLeft < minX) place = 'overlap'
+      }
+    }
+    list.dataset.place = place
+  }, [sub])
 
   function show(index: number | null) {
     window.clearTimeout(grace.current)
@@ -177,16 +199,11 @@ function MenuList({
     }
   }
 
-  // The corner nearest whatever opened it: the trigger, or the parent item.
-  const origin = flip ? '100% 0' : '0 0'
-
   return (
     <motion.ul
       ref={listRef}
       role="menu"
       className={`menu${sub ? ' menu--sub' : ''}`}
-      data-flip={flip || undefined}
-      style={{ transformOrigin: origin }}
       variants={MOTION[version]}
       custom={instant}
       initial={instant ? false : 'hidden'}

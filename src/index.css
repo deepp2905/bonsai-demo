@@ -561,6 +561,13 @@ body {
   min-height: 19rem;
 }
 
+/* Narrow screens cascade submenus downward, so they need a little more room. */
+@media (max-width: 40rem) {
+  .demo--menu {
+    min-height: 21rem;
+  }
+}
+
 .menu-root {
   position: relative;
 }
@@ -572,6 +579,9 @@ body {
   z-index: 40;
   width: 10.5rem;
   margin: 0;
+  /* Scales from the corner nearest whatever opened it: the trigger, or the
+     parent item. Mirrored when it opens to the left. */
+  transform-origin: 0 0;
   padding: 0.25rem;
   list-style: none;
   border: 1px solid var(--border-subtle);
@@ -590,13 +600,21 @@ body {
   width: 9.5rem;
 }
 
-.menu--sub[data-flip] {
+.menu--sub[data-place='left'] {
+  transform-origin: 100% 0;
   left: auto;
   right: calc(100% + 0.5rem);
 }
 
+/* No room either side: cascades down and right, over its parent. */
+.menu--sub[data-place='overlap'] {
+  top: calc(100% - 0.25rem);
+  left: 1.5rem;
+}
+
 /* A root menu without room on the right lines up with the trigger's right edge. */
-.menu[data-flip]:not(.menu--sub) {
+.menu[data-place='left']:not(.menu--sub) {
+  transform-origin: 100% 0;
   left: auto;
   right: 0;
 }
