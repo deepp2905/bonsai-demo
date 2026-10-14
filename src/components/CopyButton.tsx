@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Check, Copy } from 'lucide-react'
+import { Tooltip } from './Tooltip'
 
 /** Contextual icon swap, at the values the course fixes for it. */
 const iconMotion = {
@@ -40,24 +41,25 @@ export function CopyButton({ value, label = 'Copy code' }: { value: string; labe
   }
 
   return (
-    <button
-      type="button"
-      className="copy"
-      onClick={handleCopy}
-      aria-label={copied ? 'Copied' : label}
-      title={copied ? 'Copied' : label}
-      data-used={used || undefined}
-    >
-      <AnimatePresence mode="popLayout" initial={false}>
-        <motion.span
-          key={copied ? 'copied' : 'copy'}
-          className="copy__icon"
-          {...iconMotion}
-          transition={spring}
-        >
-          {copied ? <Check size={15} strokeWidth={2} /> : <Copy size={15} strokeWidth={2} />}
-        </motion.span>
-      </AnimatePresence>
-    </button>
+    <Tooltip label={copied ? 'Copied' : label}>
+      <button
+        type="button"
+        className="copy"
+        onClick={handleCopy}
+        aria-label={copied ? 'Copied' : label}
+        data-used={used || undefined}
+      >
+        <AnimatePresence mode="popLayout" initial={false}>
+          <motion.span
+            key={copied ? 'copied' : 'copy'}
+            className="copy__icon"
+            {...iconMotion}
+            transition={spring}
+          >
+            {copied ? <Check size={15} strokeWidth={2} /> : <Copy size={15} strokeWidth={2} />}
+          </motion.span>
+        </AnimatePresence>
+      </button>
+    </Tooltip>
   )
 }

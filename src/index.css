@@ -758,3 +758,79 @@ body {
 .demo-caption {
   margin-top: 1rem;
 }
+/* ============================================================
+   Tooltip
+   ============================================================ */
+
+/* Wraps the trigger without affecting its layout; the tooltip hangs off it,
+   so it follows the trigger through any transform (a toast moving, say). */
+.tooltip-anchor {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+
+/* Ink on the warm surface: the one dark element on the page, so it reads as
+   a label laid over the interface rather than part of it. */
+.tooltip {
+  --tooltip-offset: 0.5rem;
+  position: absolute;
+  left: 50%;
+  z-index: 50;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  background: var(--ink);
+  color: var(--neutral-50);
+  font-family: var(--font-text);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  box-shadow:
+    0 1px 2px oklch(0.215 0.012 65 / 0.12),
+    0 4px 12px -2px oklch(0.215 0.012 65 / 0.16);
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.96;
+  /* Exit: quicker than the entry, and no movement, so it gets out of the way. */
+  transition:
+    opacity 100ms ease-out,
+    scale 100ms ease-out,
+    translate 100ms ease-out;
+}
+
+.tooltip[data-side='top'] {
+  bottom: calc(100% + var(--tooltip-offset));
+  transform-origin: 50% 100%;
+  translate: -50% 2px;
+}
+
+.tooltip[data-side='bottom'] {
+  top: calc(100% + var(--tooltip-offset));
+  transform-origin: 50% 0;
+  translate: -50% -2px;
+}
+
+/* Entry: grows out of the trigger, a short ease-out. */
+.tooltip[data-open] {
+  opacity: 1;
+  scale: 1;
+  translate: -50% 0;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Warm: moving between triggers swaps the label with no animation at all. */
+.tooltip[data-instant] {
+  transition-duration: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip,
+  .tooltip[data-side] {
+    scale: 1;
+    translate: -50% 0;
+    transition-property: opacity;
+  }
+}

@@ -3,6 +3,7 @@ import type { CSSProperties, FocusEvent } from 'react'
 import { createPortal } from 'react-dom'
 import { motion } from 'motion/react'
 import { Check, X } from 'lucide-react'
+import { Tooltip } from './Tooltip'
 
 /**
  * How long each toast lives, measured from when it arrives. Paused while the stack
@@ -301,9 +302,11 @@ function useToastQueue(
 
 function CloseButton({ onClick }: { onClick: () => void }) {
   return (
-    <button type="button" className="toast__close" onClick={onClick} aria-label="Dismiss">
-      <X size={14} strokeWidth={2} />
-    </button>
+    <Tooltip label="Dismiss">
+      <button type="button" className="toast__close" onClick={onClick} aria-label="Dismiss">
+        <X size={14} strokeWidth={2} />
+      </button>
+    </Tooltip>
   )
 }
 
