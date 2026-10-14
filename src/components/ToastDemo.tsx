@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, FocusEvent } from 'react'
 import { createPortal } from 'react-dom'
-import { motion } from 'motion/react'
-import { Check, X } from 'lucide-react'
+import { X } from 'lucide-react'
+import { DemoButton, Verdict } from './DemoParts'
 import { Tooltip } from './Tooltip'
 
 /**
@@ -33,10 +33,6 @@ type ExitKind = 'expire' | 'overflow' | 'close'
 const AFTER_EXIT_MS: Record<ExitKind, number> = { expire: 160, overflow: 260, close: 260 }
 /** Before uses one plain 200ms fade, whatever the reason. */
 const BEFORE_EXIT_MS: Record<ExitKind, number> = { expire: 200, overflow: 200, close: 200 }
-
-/** Press feedback for the trigger: a quick spring down to 0.97, no overshoot. */
-const press = { scale: 0.97 }
-const pressSpring = { type: 'spring', duration: 0.2, bounce: 0 } as const
 
 /** Sample notifications: each one reports an action that can be undone. */
 const MESSAGES = [
@@ -403,28 +399,8 @@ function AnimatedStack({
 function DemoTrigger({ onRender, verdict }: { onRender: () => void; verdict: 'better' | 'worse' }) {
   return (
     <div className="demo__trigger">
-      <motion.button
-        type="button"
-        className="demo__button"
-        onClick={onRender}
-        whileTap={press}
-        transition={pressSpring}
-      >
-        Render Toast
-      </motion.button>
-      <Tooltip label={verdict === 'better' ? 'Better' : 'Worse'}>
-        <span
-          className={`verdict verdict--${verdict}`}
-          role="img"
-          aria-label={verdict === 'better' ? 'Better' : 'Worse'}
-        >
-          {verdict === 'better' ? (
-            <Check size={10} strokeWidth={3} />
-          ) : (
-            <X size={10} strokeWidth={2.5} />
-          )}
-        </span>
-      </Tooltip>
+      <DemoButton onClick={onRender}>Render Toast</DemoButton>
+      <Verdict verdict={verdict} />
     </div>
   )
 }
