@@ -50,7 +50,7 @@ export type MiscItem = {
 }
 
 export const misc: MiscItem[] = [
-  { label: 'Copy button', note: 'The icon swaps to a tick with a quick blur', demo: 'copy' },
-  { label: 'Checkbox', note: 'The tick draws itself in as you check it', demo: 'check' },
-  { label: 'Coming soon' },
+  { label: 'Copy button', note: 'Icon swaps with a quick blur', demo: 'copy' },
+  { label: 'Checkbox', note: 'Tick draws itself in as you check it', demo: 'check' },
+  { label: '?' , note:'Coming soon'},
 ]
