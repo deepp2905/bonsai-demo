@@ -736,13 +736,22 @@ body {
   }
 }
 
-/* After's one shared tooltip hangs off the toolbar, not a button, so it sits
-   the toolbar's padding lower to keep the same gap above an icon. */
-.tooltip.tooltip--shared[data-side='top'] {
-  bottom: calc(100% + var(--tooltip-offset) - 0.25rem);
+/* A tooltip group is the shared tooltip's positioning context. The tooltip
+   sits the usual offset beyond its trigger's edge, measured from the trigger
+   itself, so the group's own padding or border never shifts it. */
+.tooltip-group {
+  position: relative;
 }
 
-/* Moving to another icon, it glides there, 150ms ease-out; its width simply
+.tooltip.tooltip--shared[data-side='top'] {
+  bottom: calc(100% - var(--anchor-top) + var(--tooltip-offset));
+}
+
+.tooltip.tooltip--shared[data-side='bottom'] {
+  top: calc(var(--anchor-bottom) + var(--tooltip-offset));
+}
+
+/* Moving to another trigger, it glides there, 150ms ease-out; its width simply
    fits the new label. Opacity, scale and translate keep the tooltip's timing. */
 .tooltip.tooltip--shared {
   transition-property: opacity, scale, translate, left;
