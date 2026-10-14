@@ -1,17 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Check, Copy } from 'lucide-react'
+import { iconMotion, spring } from './iconSwap'
 import { Tooltip } from './Tooltip'
-
-/** Contextual icon swap, at the values the course fixes for it. */
-const iconMotion = {
-  initial: { opacity: 0, scale: 0.25, filter: 'blur(4px)' },
-  animate: { opacity: 1, scale: 1, filter: 'blur(0px)' },
-  exit: { opacity: 0, scale: 0.25, filter: 'blur(4px)' },
-}
-
-// The course fixes 0.3 for this swap; 0.2 keeps it snappy, with no bounce.
-const spring = { type: 'spring', duration: 0.2, bounce: 0 } as const
 
 const HOLD_MS = 1600
 
