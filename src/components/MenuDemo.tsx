@@ -32,8 +32,24 @@ const ITEMS: Item[] = [
 /** Both: how long the menu stays open after the pointer leaves it, so it can cross the gap from the trigger. */
 const MENU_CLOSE_MS = 150
 
-/** After only: how long an open submenu survives the pointer crossing a sibling on its way in. */
+/**
+ * After only: how long an open submenu holds while the pointer crosses a
+ * sibling on its way into it. Only then: otherwise siblings switch at once.
+ */
 const SUBMENU_GRACE_MS = 150
+
+type Point = { x: number; y: number }
+
+/** Whether p lies inside the triangle a, b, c. */
+function inTriangle(p: Point, a: Point, b: Point, c: Point) {
+  const side = (u: Point, v: Point, w: Point) => (u.x - w.x) * (v.y - w.y) - (v.x - w.x) * (u.y - w.y)
+  const d1 = side(p, a, b)
+  const d2 = side(p, b, c)
+  const d3 = side(p, c, a)
+  const negative = d1 < 0 || d2 < 0 || d3 < 0
+  const positive = d1 > 0 || d2 > 0 || d3 > 0
+  return !(negative && positive)
+}
 
 /** A strong ease-out: quick to respond, gentle to settle. */
 const easeOut = [0.23, 1, 0.32, 1] as const
@@ -92,6 +108,10 @@ function MenuList({
   const [swapped, setSwapped] = useState(false)
   const listRef = useRef<HTMLUListElement>(null)
   const grace = useRef<number | undefined>(undefined)
+  /** After: the sibling waiting on the grace timer, if any. */
+  const pending = useRef<number | null | undefined>(undefined)
+  /** The last few pointer positions over this list, oldest first. */
+  const trail = useRef<Point[]>([])
   /** The open submenu was opened from the keyboard, so focus moves into it. */
   const [focusChild, setFocusChild] = useState(false)
 
@@ -134,26 +154,63 @@ function MenuList({
   }, [sub])
 
   function show(index: number | null) {
-    window.clearTimeout(grace.current)
+    cancelPending()
     setSwapped(version === 'after' && openIndex !== null && index !== null)
     setOpenIndex(index)
   }
 
-  function onHover(index: number) {
+  function cancelPending() {
+    window.clearTimeout(grace.current)
+    pending.current = undefined
+  }
+
+  /** The submenu currently open from this list. */
+  function openSub() {
+    return listRef.current?.querySelector<HTMLElement>(
+      ':scope > li:has(> .menu__item[data-open]) > .menu--sub',
+    )
+  }
+
+  /**
+   * After: is the pointer heading into the open submenu? True while it is
+   * inside the triangle from where it was a moment ago to the submenu's near
+   * edge, the path a diagonal move toward it takes.
+   */
+  function aimingAtSub(at: Point) {
+    const sub = openSub()
+    const from = trail.current[0]
+    if (!sub || !from || sub.dataset.place === 'overlap') return false
+    const rect = sub.getBoundingClientRect()
+    const edge = sub.dataset.place === 'left' ? rect.right : rect.left
+    return inTriangle(at, from, { x: edge, y: rect.top }, { x: edge, y: rect.bottom })
+  }
+
+  function onHover(index: number, at: Point) {
     setFocusChild(false)
     const target = items[index].items ? index : null
     if (target === openIndex) {
-      window.clearTimeout(grace.current)
+      cancelPending()
       return
     }
-    // After: the pointer may only be crossing this item on a diagonal toward
-    // the open submenu, so give it a moment before switching.
-    if (version === 'after' && openIndex !== null) {
-      window.clearTimeout(grace.current)
+    // After: switch at once, unless the pointer is only crossing this item on
+    // its way into the open submenu. Then hold it for a moment.
+    if (version === 'after' && openIndex !== null && aimingAtSub(at)) {
+      cancelPending()
+      pending.current = target
       grace.current = window.setTimeout(() => show(target), SUBMENU_GRACE_MS)
       return
     }
     show(target)
+  }
+
+  function onPointerMove(event: ReactPointerEvent) {
+    if (event.pointerType !== 'mouse') return
+    const at = { x: event.clientX, y: event.clientY }
+    trail.current = [...trail.current.slice(-3), at]
+    if (pending.current === undefined) return
+    // Made it into the submenu: keep it. Stopped heading there: switch now.
+    if (openSub()?.contains(event.target as Node)) cancelPending()
+    else if (!aimingAtSub(at)) show(pending.current)
   }
 
   function onClick(event: MouseEvent, index: number) {
@@ -212,7 +269,7 @@ function MenuList({
       initial={instant ? false : 'hidden'}
       animate="shown"
       exit="gone"
-      onPointerEnter={() => window.clearTimeout(grace.current)}
+      onPointerMove={onPointerMove}
     >
       {items.map((item, index) => (
         <li key={item.label} className="menu__entry">
@@ -225,7 +282,7 @@ function MenuList({
             aria-expanded={item.items ? openIndex === index : undefined}
             data-open={openIndex === index || undefined}
             onPointerEnter={(event) => {
-              if (event.pointerType === 'mouse') onHover(index)
+              if (event.pointerType === 'mouse') onHover(index, { x: event.clientX, y: event.clientY })
             }}
             onClick={(event) => onClick(event, index)}
             onKeyDown={(event) => onKeyDown(event, index)}
