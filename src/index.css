@@ -392,7 +392,7 @@ body {
    primary action, set as text so it cannot be confused with the close. */
 .toast--rich {
   border: 1px solid var(--border-subtle);
-  border-radius: 0.875rem;
+  border-radius: 0.5rem;
   background: oklch(1 0 0);
   box-shadow:
     0 0 0 1px oklch(0.215 0.012 65 / 0.02),
