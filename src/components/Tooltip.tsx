@@ -29,7 +29,7 @@ export function Tooltip({
   side?: 'top' | 'bottom'
   /**
    * scale: the naive treatment, kept for comparison. No warm window: every
-   * tooltip waits 300ms and scales in over 200ms, every time.
+   * tooltip waits 300ms and scales in over 160ms, every time.
    */
   variant?: 'default' | 'scale'
   children: ReactNode
