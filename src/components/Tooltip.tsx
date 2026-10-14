@@ -37,6 +37,8 @@ export function Tooltip({
   const [instant, setInstant] = useState(false)
   const timer = useRef<number | undefined>(undefined)
   const isOpen = useRef(false)
+  // Fixed for the tooltip's life; a ref keeps hide() free of props.
+  const sharesWarmth = useRef(variant === 'default')
 
   useEffect(() => () => window.clearTimeout(timer.current), [])
 
@@ -66,7 +68,7 @@ export function Tooltip({
   function hide() {
     window.clearTimeout(timer.current)
     // Stamped now, not in a state updater, so the next trigger sees it on the same pointer move.
-    if (isOpen.current && variant === 'default') lastClosedAt = performance.now()
+    if (isOpen.current && sharesWarmth.current) lastClosedAt = performance.now()
     setVisible(false, false)
   }
 
