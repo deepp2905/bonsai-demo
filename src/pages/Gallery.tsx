@@ -12,7 +12,7 @@ function Gallery() {
       <header className="masthead">
         <h1 className="type-display">Interaction improvements for Bonsai</h1>
         <p className="type-body masthead__sub">
-        The goal was to make the interface feel smoother and faster, and to use motion only where it is needed. Every animation here has a job: showing where a new toast came from, getting a menu out of the way once you are done with it, or getting a tooltip to you sooner.
+        The goal was to make the interface feel smoother and faster, and to use motion only where it is needed. I've focused on fixing micro-interactions that make the experience better. I believe 100s of details like these add up and improve the overall feel of product.
         </p>
       </header>
 
@@ -61,7 +61,7 @@ function Gallery() {
           <h2 className="type-heading entry__title">Final thoughts</h2>
         </header>
         <p className="type-body entry__context">
-          If I had to pick what to do next, I'd spend time on:
+          If I had to pick what to do next, I'd spend time polishing:
         </p>
         <ul className="type-body next-list">
           <li>
