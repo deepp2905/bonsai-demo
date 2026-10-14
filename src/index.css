@@ -188,10 +188,9 @@ body {
 
 /* Copy prompt: a small pill, set like the demo triggers but quieter. */
 .copy-prompt {
-  display: inline-flex;
+  display: inline-grid;
   flex: none;
   align-items: center;
-  gap: 0.375rem;
   height: 2rem;
   padding: 0 0.75rem 0 0.625rem;
   border: 1px solid var(--border);
@@ -216,24 +215,25 @@ body {
   outline-offset: 2px;
 }
 
-/* Both labels stack in one cell: the pill is as wide as the longer one, and
-   the hidden one keeps its space without being seen or read out. */
-.copy-prompt__label {
-  display: grid;
-  justify-items: start;
-}
-
-.copy-prompt__label > span {
+/* The sizer and the visible row share one cell: the sizer (widest state,
+   never seen) sets the width, and the visible row is centred in it. */
+.copy-prompt__row {
   grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-self: center;
+  gap: 0.375rem;
 }
 
-.copy-prompt__label > [data-hidden] {
+.copy-prompt__sizer {
   visibility: hidden;
 }
 
 /* One cell for both icons, so the swap never shifts the label. */
 .copy-prompt__icon {
   display: grid;
+  width: 14px;
+  height: 14px;
   color: var(--text-muted);
 }
 
