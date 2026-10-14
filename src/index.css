@@ -555,19 +555,8 @@ body {
    Menu demo
    ============================================================ */
 
-/* Room below the triggers for a menu and its submenu to open inside the frame. */
-.demo--menu {
-  align-items: flex-start;
-  min-height: 19rem;
-}
-
-/* Narrow screens cascade submenus downward, so they need a little more room. */
-@media (max-width: 40rem) {
-  .demo--menu {
-    min-height: 21rem;
-  }
-}
-
+/* Menus open over the frame's edge as overlays, so the frame keeps the same
+   height as the other demos and the triggers stay optically centred. */
 .menu-root {
   position: relative;
 }

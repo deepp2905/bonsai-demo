@@ -351,7 +351,7 @@ function MenuDemo({ version }: { version: Version }) {
 export function MenuCompare() {
   return (
     <figure className="slot">
-      <div className="slot__frame demo demo--menu">
+      <div className="slot__frame demo">
         <MenuDemo version="before" />
         <MenuDemo version="after" />
       </div>
