@@ -71,7 +71,8 @@ function Gallery() {
             Bonsai starts up
           </li>
           <li>
-            <strong>Chat interface:</strong> Improving ways the user is
+            <strong>Chat interface:</strong> Improving the moments where the user is asked
+            for input and given choices to pick from
           </li>
           <li>
             <strong>Analytics page:</strong> Adding motion to graphs and charts
