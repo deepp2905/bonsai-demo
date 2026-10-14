@@ -10,8 +10,8 @@ import { Tooltip } from './Tooltip'
  * is hovered; in After, leaving the stack restarts it from the full lifetime.
  */
 const LIFETIME_MS = 4000
-/** How many toasts can be on screen at once; a new one past this pushes the oldest out. */
-const MAX_VISIBLE = 4
+/** After only: how many toasts can be on screen at once; a new one past this pushes the oldest out. */
+const MAX_VISIBLE = 6
 /** After only: how many pushed-out toasts wait off screen to come back. Past this, the oldest is dropped. */
 const MAX_HIDDEN = 6
 /** After only: gap between each toast's expiry after the stack is released, oldest first. */

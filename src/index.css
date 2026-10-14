@@ -296,7 +296,7 @@ body {
   bottom: 1.5rem;
   z-index: 100;
   width: min(22rem, calc(100vw - 2rem));
-  height: calc(var(--toast-h) * 4 + var(--toast-gap) * 3); /* MAX_VISIBLE in ToastDemo.tsx */
+  height: calc(var(--toast-h) * 6 + var(--toast-gap) * 5); /* MAX_VISIBLE in ToastDemo.tsx */
   pointer-events: none;
 }
 
