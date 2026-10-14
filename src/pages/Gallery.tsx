@@ -9,10 +9,7 @@ function Gallery() {
         <h1 className="type-display">Interaction improvements</h1>
         <p className="type-body masthead__sub">
           Three interaction details from Bonsai, rebuilt. Each entry pairs the problem
-          with the version that shipped, the reasoning behind it, and the demo.
-        </p>
-        <p className="type-caption masthead__note">
-          A design exploration — not an official Bonsai changelog.
+          with the version that shipped, the reasoning behind it, and the demo. Product feel smooth with 100s of small improvements like this over a few fancy animations.
         </p>
       </header>
 

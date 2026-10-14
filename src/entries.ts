@@ -21,18 +21,7 @@ export const entries: Entry[] = [
     index: '01',
     title: 'Stacked toasts',
     context:
-      'Toasts already stacked, but every change happened in a single frame: a new toast appeared and the others jumped up to make room, so it was hard to tell which one was new. They now share a single stack that moves as a unit: a new toast enters at the bottom and pushes the others up, and each one leaves on its own clock.',
-    code: `.toast {
-  /* Position animates, so the stack moves as a unit */
-  transition:
-    translate 260ms cubic-bezier(0.33, 1, 0.68, 1),
-    opacity 260ms cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-.toast[data-exit='expire'] {
-  transition-duration: 160ms;
-}`,
-    codeCaption: 'Transitions rather than keyframes, so a mid-flight toast retargets instead of restarting.',
+      'Currently if a new toast is rendered, the others jump instantly up to make room, so it is hard to tell which one is new. In my version they share a single stack that moves as a unit. A new toast enters at the bottom and pushes the others up.',
     media: { kind: 'demo', demo: 'toasts' },
   },
   {
