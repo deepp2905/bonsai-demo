@@ -67,8 +67,8 @@ function Gallery() {
         </p>
         <ul className="type-body next-list">
           <li>
-            <strong>Boot up Loading screen:</strong> Utilize the screen real estate while
-            Bonsai starts up
+            <strong>Boot-up loading screen:</strong> Use the screen space while Bonsai
+            starts up
           </li>
           <li>
             <strong>Chat interface:</strong> Improving the moments where the user is asked
