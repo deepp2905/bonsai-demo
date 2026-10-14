@@ -595,6 +595,12 @@ body {
   right: calc(100% + 0.5rem);
 }
 
+/* A root menu without room on the right lines up with the trigger's right edge. */
+.menu[data-flip]:not(.menu--sub) {
+  left: auto;
+  right: 0;
+}
+
 .menu__entry {
   position: relative;
 }

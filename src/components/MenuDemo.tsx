@@ -39,9 +39,12 @@ const easeOut = [0.23, 1, 0.32, 1] as const
  * Before: the current treatment. Fades in; fades and scales down on the way
  * out; 300ms both ways, for the menu and every submenu.
  *
- * After: 150ms in, scaling up a touch from where it opens; 100ms out, a plain
- * fade with no movement, so it gets out of the way. A submenu that replaces a
- * sibling (`instant`) swaps with no animation at all.
+ * After: 150ms in, scaling up a touch; 100ms out, shrinking back a touch, so
+ * it gets out of the way. A submenu that replaces a sibling (`instant`) swaps
+ * with no animation at all.
+ *
+ * Both versions scale from where each pop-up opens: the menu from its trigger,
+ * a submenu from the item that opened it.
  */
 const MOTION: Record<Version, Variants> = {
   before: {
@@ -54,6 +57,7 @@ const MOTION: Record<Version, Variants> = {
     shown: { opacity: 1, scale: 1, transition: { duration: 0.15, ease: easeOut } },
     gone: (instant: boolean) => ({
       opacity: 0,
+      scale: 0.97,
       transition: { duration: instant ? 0 : 0.1, ease: 'easeOut' },
     }),
   },
@@ -173,7 +177,8 @@ function MenuList({
     }
   }
 
-  const origin = version === 'before' ? '50% 50%' : flip ? '100% 0' : '0 0'
+  // The corner nearest whatever opened it: the trigger, or the parent item.
+  const origin = flip ? '100% 0' : '0 0'
 
   return (
     <motion.ul
