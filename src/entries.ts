@@ -29,7 +29,7 @@ export const entries: Entry[] = [
     index: '02',
     title: 'Pop-up menus',
     context:
-      'Currently the menu and its submenus take 300ms to fade in and out, so moving between submenus feels slow and the fades overlap. In my version the menu opens and closes faster, and submenus switch instantly as you hover.',
+      'Currently the menu and its submenus to fade in and out, so moving between submenus feels slow and the fades overlap. In my version the menu opens and closes faster, and submenus switch instantly as you hover.',
     media: { kind: 'demo', demo: 'menus' },
   },
   {
@@ -37,7 +37,7 @@ export const entries: Entry[] = [
     index: '03',
     title: 'Toolbar tooltips',
     context:
-      'Currently every tooltip waits and then scales in, each time a new icon is hovered, so moving along the toolbar feels slow. In my version only the first tooltip waits, to avoid opening by accident. After that, the rest appear instantly.',
+      'Currently every tooltip has a delay and then scales in, each time a new icon is hovered, so moving along the toolbar feels slow. In my version only the first tooltip has a delay, to avoid opening by accident. After that, it stays open and slides to each icon you hover.',
     media: { kind: 'demo', demo: 'tooltips' },
   },
 ]
