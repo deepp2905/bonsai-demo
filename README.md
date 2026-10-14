@@ -6,7 +6,7 @@ A design exploration that rebuilds a handful of interaction details from Bonsai.
 
 - **Interactions** (`/`): the gallery of entries. It is the only page.
   1. **Stacked toasts**: a live Before/After demo. New toasts enter at the bottom and push the stack up as a unit, each toast leaves on its own clock, and hovering or focusing the stack pauses every timer.
-  2. **Origin-aware menus**: menus scale out of the click point instead of the element centre.
+  2. **Pop-up menus**: a live Before/After demo of a menu with submenus. Before fades in and fades and shrinks out over 300ms. After opens in 150ms, closes with a 100ms fade, swaps submenus instantly, and gives an open submenu a 150ms grace period so a diagonal move toward it does not lose it.
   3. **Hold to delete**: a destructive action that needs an 800ms hold, with a progress ring.
   4. **Miscellaneous**: smaller single-property details (button press, toggle, tooltip, checkbox).
 
@@ -28,6 +28,8 @@ src/
     Entry.tsx         One gallery entry
     MediaSlot.tsx     Demo, video placeholder or before/after comparison
     ToastDemo.tsx     The live stacked-toasts demo
+    MenuDemo.tsx      The live pop-up menu demo
+    DemoParts.tsx     Shared demo trigger and verdict badge
     CodeBlock.tsx     Snippet frame with CopyButton
   index.css           Design tokens, type scale and component styles
 ```

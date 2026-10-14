@@ -1,7 +1,7 @@
 export type Media =
   | { kind: 'video'; label: string }
   /** A live, working demo rendered by its own component. */
-  | { kind: 'demo'; demo: 'toasts' }
+  | { kind: 'demo'; demo: 'toasts' | 'menus' | 'tooltips' }
   | { kind: 'compare'; before: string; after: string }
 
 export type Entry = {
@@ -27,22 +27,10 @@ export const entries: Entry[] = [
   {
     id: 'menus',
     index: '02',
-    title: 'Origin-aware menus',
+    title: 'Pop-up menus',
     context:
-      'The context menu opened from the centre of the element, which made it feel like a separate panel that happened to appear nearby. It now scales out of the point you clicked, so the menu reads as coming from the thing you pressed.',
-    code: `.menu {
-  /* Origin follows the pointer, not the element */
-  transform-origin: var(--origin-x) var(--origin-y);
-  transition:
-    scale 160ms cubic-bezier(0.2, 0, 0, 1),
-    opacity 120ms ease-out;
-}`,
-    codeCaption: 'Radix exposes the pointer coordinates as transform-origin variables.',
-    media: {
-      kind: 'compare',
-      before: 'Opens from the element centre',
-      after: 'Opens from the click point',
-    },
+      'Currently the menu and every submenu fade in, then fade and shrink on the way out, all over 300ms, so moving between submenus leaves a trail of overlapping fades. In my version the menu opens in 150ms, closes with a quick 100ms fade, and submenus swap instantly.',
+    media: { kind: 'demo', demo: 'menus' },
   },
   {
     id: 'hold-to-delete',
