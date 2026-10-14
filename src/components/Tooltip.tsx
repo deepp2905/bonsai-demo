@@ -3,6 +3,8 @@ import type { FocusEvent, PointerEvent, ReactNode } from 'react'
 
 /** Hover dwell before the first tooltip opens. */
 const OPEN_DELAY_MS = 500
+/** Scale variant: the dwell before every tooltip, with no warm window to skip it. */
+const SCALE_DELAY_MS = 300
 /** After one closes, another opens instantly for this long, so scanning a row of icons feels immediate. */
 const SKIP_DELAY_MS = 300
 
@@ -26,8 +28,8 @@ export function Tooltip({
   label: ReactNode
   side?: 'top' | 'bottom'
   /**
-   * scale: the naive treatment, kept for comparison. No dwell and no warm
-   * window: every tooltip opens at once and scales in over 200ms, every time.
+   * scale: the naive treatment, kept for comparison. No warm window: every
+   * tooltip waits 300ms and scales in over 200ms, every time.
    */
   variant?: 'default' | 'scale'
   children: ReactNode
@@ -54,7 +56,9 @@ export function Tooltip({
   function show(delay: number) {
     window.clearTimeout(timer.current)
     if (variant === 'scale') {
-      setVisible(true, false)
+      // Every hover waits the same dwell; keyboard focus (delay 0) opens at once.
+      if (delay === 0) setVisible(true, false)
+      else timer.current = window.setTimeout(() => setVisible(true, false), SCALE_DELAY_MS)
       return
     }
     const warm = performance.now() - lastClosedAt < SKIP_DELAY_MS

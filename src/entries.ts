@@ -37,7 +37,7 @@ export const entries: Entry[] = [
     index: '03',
     title: 'Toolbar tooltips',
     context:
-      'Currently every tooltip scales in over 200ms, every time a new icon is hovered, so scanning a toolbar means watching the same animation again and again. In my version only the first tooltip waits a moment, to avoid opening by accident. Once one is open, the rest appear instantly, with no animation.',
+      'Currently every tooltip waits 300ms and then scales in over 200ms, every time a new icon is hovered, so scanning a toolbar means watching the same animation again and again. In my version only the first tooltip waits a moment, to avoid opening by accident. Once one is open, the rest appear instantly, with no animation.',
     media: { kind: 'demo', demo: 'tooltips' },
   },
 ]
