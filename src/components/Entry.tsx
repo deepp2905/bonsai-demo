@@ -1,5 +1,4 @@
 import { CodeBlock } from './CodeBlock'
-import { CompareSlot, MediaSlot } from './MediaSlot'
 import { MenuCompare } from './MenuDemo'
 import { ToastCompare } from './ToastDemo'
 import { TooltipCompare } from './TooltipDemo'
@@ -25,13 +24,7 @@ export function Entry({ entry }: { entry: EntryData }) {
 
       {entry.code ? <CodeBlock code={entry.code} caption={entry.codeCaption} /> : null}
 
-      {entry.media.kind === 'video' ? (
-        <MediaSlot label={entry.media.label} />
-      ) : entry.media.kind === 'demo' ? (
-        <Demo demo={entry.media.demo} />
-      ) : (
-        <CompareSlot before={entry.media.before} after={entry.media.after} />
-      )}
+      <Demo demo={entry.media.demo} />
     </article>
   )
 }

@@ -193,23 +193,6 @@ body {
   text-wrap: balance;
 }
 
-.compare {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin-top: 1.75rem;
-}
-
-.compare .slot {
-  margin: 0;
-}
-
-@media (max-width: 40rem) {
-  .compare {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ============================================================
    Toast demo
    ============================================================ */

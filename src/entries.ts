@@ -1,8 +1,5 @@
-export type Media =
-  | { kind: 'video'; label: string }
-  /** A live, working demo rendered by its own component. */
-  | { kind: 'demo'; demo: 'toasts' | 'menus' | 'tooltips' }
-  | { kind: 'compare'; before: string; after: string }
+/** A live, working demo rendered by its own component. */
+export type Media = { kind: 'demo'; demo: 'toasts' | 'menus' | 'tooltips' }
 
 export type Entry = {
   id: string
