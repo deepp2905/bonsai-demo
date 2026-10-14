@@ -371,7 +371,7 @@ body {
   padding-top: 0.75rem;
   border: 1px solid var(--border);
   border-radius: 0.5rem;
-  background: var(--neutral-50);
+  background: oklch(1 0 0);
 }
 
 /* Before exits with a plain fade in place; nothing moves until it is gone. */
@@ -433,13 +433,21 @@ body {
   outline-offset: 2px;
 }
 
-/* Before: plain flow. Every add or removal reflows in one frame. */
+/* Before: plain flow. Every add or removal reflows in one frame. Anchored to
+   the bottom and uncapped, so it grows upward past the viewport's height. */
 .toast-stack--static {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   gap: var(--toast-gap);
-  height: 100%;
+}
+
+/* Fixed height: never squeezed to fit, however many toasts there are. */
+.toast-stack--static .toast {
+  flex: none;
 }
 
 /* After: each toast is placed by its slot, and the placement transitions. */

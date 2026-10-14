@@ -110,6 +110,8 @@ function useToastQueue(
   keepHidden: boolean,
   /** After: leaving the stack gives every toast a fresh full lifetime, not just what it had left. */
   restartOnLeave: boolean,
+  /** How many toasts fit before the oldest is pushed out. Before has no cap. */
+  maxVisible: number,
 ) {
   const [toasts, setToasts] = useState<Toast[]>([])
   /** What the last change was, so the toasts that move use entry or exit timing. */
@@ -248,7 +250,7 @@ function useToastQueue(
   function push() {
     // At the cap, the oldest shown toast is pushed out in the same batch as the new one arrives.
     const shown = toasts.filter(isShown)
-    const pushedOut = shown.length >= MAX_VISIBLE ? shown[0].id : undefined
+    const pushedOut = shown.length >= maxVisible ? shown[0].id : undefined
 
     setPhase('enter')
     const id = nextId.current++
@@ -257,7 +259,7 @@ function useToastQueue(
       if (pushedOut !== undefined) {
         next = next.map((toast) =>
           toast.id === pushedOut
-            ? { ...toast, status: 'leaving' as const, leavingFrom: MAX_VISIBLE - 1, exit: 'overflow' as const }
+            ? { ...toast, status: 'leaving' as const, leavingFrom: maxVisible - 1, exit: 'overflow' as const }
             : toast,
         )
       }
@@ -442,8 +444,8 @@ function DemoFrame({
  * share that corner, so triggering one clears the other's toasts.
  */
 export function ToastCompare() {
-  const before = useToastQueue(BEFORE_EXIT_MS, false, false)
-  const after = useToastQueue(AFTER_EXIT_MS, true, true)
+  const before = useToastQueue(BEFORE_EXIT_MS, false, false, Infinity)
+  const after = useToastQueue(AFTER_EXIT_MS, true, true, MAX_VISIBLE)
   const [mode, setMode] = useState<'before' | 'after'>('after')
   const queue = mode === 'before' ? before : after
   const queueRef = useRef(queue)
