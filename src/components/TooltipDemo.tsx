@@ -30,7 +30,8 @@ function BeforeToolbar() {
 /**
  * After: one tooltip for the whole toolbar. The first one waits a short dwell
  * and fades in; from then on it stays open, and moving to another icon jumps
- * it there and swaps the text. Only its width eases, 100ms, to fit the new label. It closes when the pointer
+ * it there and swaps the text. It glides to the new icon and its width eases
+ * to fit the new label, both over 150ms. It closes when the pointer
  * leaves the toolbar, and reopens instantly if it comes back straight away.
  */
 function AfterToolbar() {
@@ -49,8 +50,9 @@ function AfterToolbar() {
 
   /*
    * Size the tooltip to its label. width: auto cannot transition, so the width
-   * is measured and set; CSS eases it. While closed (or as it opens) it is
-   * sized without animating, so it never grows out of the last label it showed.
+   * is measured and set; CSS eases it, and the move to the new icon (left).
+   * While closed (or as it opens) it is placed and sized without animating, so
+   * it never glides or grows out of the last label it showed.
    */
   useLayoutEffect(() => {
     const tip = tipRef.current
