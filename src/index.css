@@ -216,6 +216,21 @@ body {
   outline-offset: 2px;
 }
 
+/* Both labels stack in one cell: the pill is as wide as the longer one, and
+   the hidden one keeps its space without being seen or read out. */
+.copy-prompt__label {
+  display: grid;
+  justify-items: start;
+}
+
+.copy-prompt__label > span {
+  grid-area: 1 / 1;
+}
+
+.copy-prompt__label > [data-hidden] {
+  visibility: hidden;
+}
+
 /* One cell for both icons, so the swap never shifts the label. */
 .copy-prompt__icon {
   display: grid;

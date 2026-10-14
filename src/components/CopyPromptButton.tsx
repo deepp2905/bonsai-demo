@@ -43,7 +43,16 @@ export function CopyPromptButton({ prompt }: { prompt: string }) {
           </motion.span>
         </AnimatePresence>
       </span>
-      <span aria-live="polite">{copied ? 'Copied' : 'Copy prompt'}</span>
+      {/* Both labels share one cell and only one is visible, so the pill keeps
+          the width of the longer label and never resizes when it swaps. */}
+      <span className="copy-prompt__label" aria-live="polite">
+        <span aria-hidden={copied || undefined} data-hidden={copied || undefined}>
+          Copy prompt
+        </span>
+        <span aria-hidden={!copied || undefined} data-hidden={!copied || undefined}>
+          Copied
+        </span>
+      </span>
     </DemoButton>
   )
 }
