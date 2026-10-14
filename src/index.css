@@ -29,8 +29,15 @@
   --font-display: 'Satoshi', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-text: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* Vertical rhythm between top-level blocks */
-  --gap-section: 5rem;
+  /*
+   * Vertical rhythm, one scale so related things sit closer than unrelated
+   * ones: 8px label to heading, 12px heading to text and frame to caption,
+   * 32px text to demo, 96px between sections.
+   */
+  --gap-label: 0.5rem;
+  --gap-text: 0.75rem;
+  --gap-media: 2rem;
+  --gap-section: 6rem;
 
   color-scheme: light;
 }
@@ -134,7 +141,7 @@ body {
 }
 
 .masthead__sub {
-  margin-top: 0.875rem;
+  margin-top: var(--gap-text);
   color: var(--text-muted);
 }
 
@@ -159,11 +166,11 @@ body {
 }
 
 .entry__head {
-  margin-bottom: 1rem;
+  margin-bottom: var(--gap-text);
 }
 
 .entry__title {
-  margin-top: 0.375rem;
+  margin-top: var(--gap-label);
 }
 
 .entry__context + .entry__context {
@@ -175,7 +182,7 @@ body {
    ============================================================ */
 
 .slot {
-  margin: 1.75rem 0 0;
+  margin: var(--gap-media) 0 0;
 }
 
 .slot__frame {
@@ -215,7 +222,7 @@ body {
 }
 
 .slot__caption {
-  margin-top: 0.625rem;
+  margin-top: var(--gap-text);
   text-align: center;
   text-wrap: balance;
 }
@@ -744,7 +751,7 @@ body {
 
 .misc {
   list-style: none;
-  margin: 2rem 0 0;
+  margin: var(--gap-media) 0 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
@@ -756,7 +763,7 @@ body {
 }
 
 .misc__note {
-  margin-top: 0.625rem;
+  margin-top: var(--gap-text);
 }
 
 .misc__frame {
