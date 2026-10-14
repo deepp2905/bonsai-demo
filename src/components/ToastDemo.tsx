@@ -528,7 +528,7 @@ export function ToastCompare() {
           <DemoTrigger onRender={renderAfter} verdict="better" />
         </div>
         <figcaption className="type-caption slot__caption">
-          One stack that moves as a unit, so a new toast never jumps into place
+          Render a few toasts in a row, then close one
         </figcaption>
       </figure>
 

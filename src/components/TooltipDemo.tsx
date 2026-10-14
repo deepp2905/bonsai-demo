@@ -177,7 +177,7 @@ export function TooltipCompare() {
         </div>
       </div>
       <figcaption className="type-caption slot__caption">
-        Only the first tooltip waits; then it follows you along the toolbar
+        Sweep across the icons to see each tooltip
       </figcaption>
     </figure>
   )
