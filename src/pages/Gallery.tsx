@@ -65,7 +65,7 @@ function Gallery() {
         </p>
         <ul className="type-body next-list">
           <li>
-            <strong>Boot-up loading screen:</strong> Use the screen space productively while Bonsai
+            <strong>Boot-up loading screen:</strong> Use the screen space productively while the application
             starts up
           </li>
           <li>
