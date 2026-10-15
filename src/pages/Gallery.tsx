@@ -10,7 +10,7 @@ function Gallery() {
   return (
     <main className="page page--wide">
       <header className="masthead">
-        <h1 className="type-display">Interaction improvements for Bonsai</h1>
+        <h1 className="type-display">Interaction improvements</h1>
         <p className="type-body masthead__sub">
         The goal was to make the interface feel smoother and faster, and to use motion only where it is needed. I've focused on fixing micro-interactions that make the experience better. I believe 100s of details like these add up and improve the overall feel of product.
         </p>
